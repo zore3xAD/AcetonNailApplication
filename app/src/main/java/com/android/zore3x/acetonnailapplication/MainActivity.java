@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import com.android.zore3x.acetonnailapplication.clients.ClientsListFragment;
 import com.android.zore3x.acetonnailapplication.masters.MastersListFragment;
+import com.android.zore3x.acetonnailapplication.timetable.TimetableListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
+                fillMainContent(TimetableListFragment.newInstance());
                 break;
         }
 
