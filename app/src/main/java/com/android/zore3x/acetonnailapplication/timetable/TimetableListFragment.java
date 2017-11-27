@@ -16,11 +16,14 @@ import com.android.zore3x.acetonnailapplication.R;
 
 public class TimetableListFragment extends Fragment {
 
+    public static final String ID = "TimetableListFragment";
+
     public static final String TAG = "TimetableListFragment";
 
     public static TimetableListFragment newInstance() {
 
         Bundle args = new Bundle();
+        args.putString("id", ID);
 
         TimetableListFragment fragment = new TimetableListFragment();
         fragment.setArguments(args);

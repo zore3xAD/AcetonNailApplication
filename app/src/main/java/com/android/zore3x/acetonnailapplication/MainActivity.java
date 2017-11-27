@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
 
+    private String mFragmentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,17 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // проверяем на каком фрагменте была нажата fab
+                switch (mFragmentId) {
+                    case ClientsListFragment.ID:
+                        Log.i(TAG, "Add client");
+                        return;
+                    case MastersListFragment.ID:
+                        Log.i(TAG, "Add master");
+                        return;
+                    case TimetableListFragment.ID:
+                        Log.i(TAG, "Add new record");
+                }
             }
         });
 
@@ -111,11 +122,12 @@ public class MainActivity extends AppCompatActivity
 
     private void fillMainContent(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragmentContainer = fm.findFragmentById(R.id.fragment_container);
+//        Fragment fragmentContainer = fm.findFragmentById(R.id.fragment_container);
 
-        fragmentContainer = fragment;
+//        fragmentContainer = fragment;
+        mFragmentId = fragment.getArguments().getString("id");
         fm.beginTransaction()
-                .replace(R.id.fragment_container, fragmentContainer)
+                .replace(R.id.fragment_container, fragment)
                 .commit();
     }
 }

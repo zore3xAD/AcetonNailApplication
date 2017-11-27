@@ -16,11 +16,14 @@ import com.android.zore3x.acetonnailapplication.R;
 
 public class MastersListFragment extends Fragment {
 
+    public static final String ID = "MastersListFragment";
+
     private static final String TAG = "MastersListFragment";
 
     public static MastersListFragment newInstance() {
 
         Bundle args = new Bundle();
+        args.putString("id", ID);
 
         MastersListFragment fragment = new MastersListFragment();
         fragment.setArguments(args);
