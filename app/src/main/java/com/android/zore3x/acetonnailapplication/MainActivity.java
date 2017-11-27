@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
                 switch (mFragmentId) {
                     case ClientsListFragment.ID:
                         Log.i(TAG, "Add client");
+                        startActivity(EditClientInformationActivity.newIntent(getApplication()));
                         return;
                     case MastersListFragment.ID:
                         Log.i(TAG, "Add master");
