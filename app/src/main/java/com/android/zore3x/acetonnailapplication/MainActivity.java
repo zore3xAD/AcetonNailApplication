@@ -2,7 +2,6 @@ package com.android.zore3x.acetonnailapplication;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity
 //        fragmentContainer = fragment;
         mFragmentId = fragment.getArguments().getString("id");
         fm.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_container_main, fragment)
                 .commit();
     }
 }
