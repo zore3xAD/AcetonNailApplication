@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.zore3x.acetonnailapplication.clients.ClientsListFragment;
+import com.android.zore3x.acetonnailapplication.masters.MastersListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_masters:
                 Log.i(TAG, "Masters tab");
+                fillMainContent(MastersListFragment.newInstance());
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
@@ -109,11 +111,9 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragmentContainer = fm.findFragmentById(R.id.fragment_container);
 
-        if (fragmentContainer == null) {
-            fragmentContainer = fragment;
-            fm.beginTransaction()
-                    .add(R.id.fragment_container, fragmentContainer)
-                    .commit();
-        }
+        fragmentContainer = fragment;
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragmentContainer)
+                .commit();
     }
 }
