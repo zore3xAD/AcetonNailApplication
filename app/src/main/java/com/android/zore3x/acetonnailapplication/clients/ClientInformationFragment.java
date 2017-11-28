@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.EditClientInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
@@ -88,9 +89,13 @@ public class ClientInformationFragment extends Fragment {
                 startActivity(intent);
 
                 return true;
+            case R.id.menu_item_client_delete:
+                ClientLab.get(getActivity()).delete(mClient);
+                Toast.makeText(getActivity(), "Client " + mClient.getPersonal() + "was deleted", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void updateUI() {

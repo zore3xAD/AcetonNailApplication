@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.android.zore3x.acetonnailapplication.database.BaseHelper;
 import com.android.zore3x.acetonnailapplication.database.DbSchema;
@@ -19,6 +20,8 @@ import java.util.UUID;
  */
 
 public class ClientLab {
+
+    private static final String TAG = "ClientLab";
 
     private static ClientLab sClientLab;
     private Context mContext;
@@ -43,6 +46,7 @@ public class ClientLab {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                Log.i(TAG, "Get client: " + cursor.getClient().getPersonal());
                 clients.add(cursor.getClient());
                 cursor.moveToNext();
             }
@@ -58,9 +62,11 @@ public class ClientLab {
                 new String[]{uuid.toString()});
             try {
                 if (cursor.getCount() == 0) {
+                    Log.i(TAG, "Client: " + uuid.toString() + " not found");
                     return null;
                 }
                 cursor.moveToFirst();
+                Log.i(TAG, "Client exist: " + cursor.getClient().getPersonal());
                 return cursor.getClient();
             } finally {
                 cursor.close();
@@ -71,6 +77,7 @@ public class ClientLab {
     public void add(Client client) {
         ContentValues values = getContentValues(client);
         mDatabase.insert(ClientTable.NAME, null, values);
+        Log.i(TAG, "Client " + client.getPersonal() + " was added into database");
     }
 
     // обновление записи в базе данных
@@ -82,6 +89,7 @@ public class ClientLab {
                 ClientTable.Cols.UUID + " = ?",
                 new String[]{client.getId().toString()}
         );
+        Log.i(TAG, "Client " + client.getId() + " was updated");
     }
 
     // удаление записи из базы данных
@@ -91,6 +99,7 @@ public class ClientLab {
                 ClientTable.Cols.UUID + " = ?",
                 new String[]{client.getId().toString()}
         );
+        Log.i(TAG, "Client " + client.getPersonal() + " was deleted with database");
     }
 
     private ContentValues getContentValues(Client client) {

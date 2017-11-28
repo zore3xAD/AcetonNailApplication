@@ -55,6 +55,12 @@ public class ClientsListFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private class ClientHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTextViewItemClientPersonal;

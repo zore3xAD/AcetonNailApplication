@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.R;
 
@@ -79,6 +80,7 @@ public class EditClientInformationFragment extends Fragment {
                     mClient.setSurname(surname);
                     mClient.setPhone(phone);
                     ClientLab.get(getActivity()).update(mClient);
+                    Toast.makeText(getActivity(), "Client edited", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 } else {
                     mClient = new Client();
@@ -86,6 +88,8 @@ public class EditClientInformationFragment extends Fragment {
                     mClient.setSurname(surname);
                     mClient.setPhone(phone);
                     ClientLab.get(getActivity()).add(mClient);
+                    Toast.makeText(getActivity(), "Client " + mClient.getPersonal() + " was added", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
                 }
             }
         });
