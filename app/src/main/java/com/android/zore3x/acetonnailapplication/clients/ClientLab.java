@@ -29,7 +29,7 @@ public class ClientLab {
         mDatabase = new BaseHelper(mContext).getWritableDatabase();
     }
 
-    public ClientLab get(Context context) {
+    public static ClientLab get(Context context) {
         if(sClientLab == null) {
             sClientLab = new ClientLab(context);
         }
