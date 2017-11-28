@@ -45,7 +45,7 @@ public class ClientsListFragment extends Fragment {
         Log.i(TAG, "All client list fragment");
 
         View v = inflater.inflate(R.layout.fragment_recycler_view_list, container, false);
-        mRecyclerViewClientList = (RecyclerView)v.findViewById(R.id.recyclerView_client_list);
+        mRecyclerViewClientList = (RecyclerView)v.findViewById(R.id.recyclerView_list);
         mRecyclerViewClientList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
