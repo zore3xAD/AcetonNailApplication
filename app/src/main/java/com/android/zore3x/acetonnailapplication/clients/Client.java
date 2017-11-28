@@ -12,7 +12,7 @@ public class Client {
     private UUID mId;
     private String mName;
     private String mSurname;
-    private Date mDate;
+    private String mPhone;
 
     public Client() {
         mId = UUID.randomUUID();
@@ -46,15 +46,16 @@ public class Client {
         mSurname = surname;
     }
 
-    public Date getDate() {
-        return mDate;
+    public String getPhone() {
+        return mPhone;
     }
 
-    public void setDate(Date date) {
-        mDate = date;
+    public void setPhone(String phone) {
+        mPhone = phone;
     }
 
     public String getPersonal() {
         return mName + " " + mSurname;
     }
+
 }
