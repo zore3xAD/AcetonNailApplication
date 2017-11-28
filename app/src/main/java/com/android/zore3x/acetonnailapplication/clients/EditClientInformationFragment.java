@@ -69,12 +69,24 @@ public class EditClientInformationFragment extends Fragment {
         mButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Client client = new Client();
-                client.setName(mEditTextClientName.getText().toString());
-                client.setSurname(mEditTextClientSurname.getText().toString());
-                client.setPhone(mEditTextClientPhone.getText().toString());
 
-                ClientLab.get(getActivity()).add(client);
+                String name = mEditTextClientName.getText().toString();
+                String surname = mEditTextClientSurname.getText().toString();
+                String phone = mEditTextClientPhone.getText().toString();
+
+                if(isEditable) {
+                    mClient.setName(name);
+                    mClient.setSurname(surname);
+                    mClient.setPhone(phone);
+                    ClientLab.get(getActivity()).update(mClient);
+                    getActivity().finish();
+                } else {
+                    mClient = new Client();
+                    mClient.setName(name);
+                    mClient.setSurname(surname);
+                    mClient.setPhone(phone);
+                    ClientLab.get(getActivity()).add(mClient);
+                }
             }
         });
 
