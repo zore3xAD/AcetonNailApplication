@@ -1,5 +1,6 @@
 package com.android.zore3x.acetonnailapplication.clients;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.zore3x.acetonnailapplication.ClientInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
 
 import java.util.List;
@@ -53,7 +55,7 @@ public class ClientsListFragment extends Fragment {
         return v;
     }
 
-    private class ClientHolder extends RecyclerView.ViewHolder {
+    private class ClientHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTextViewItemClientPersonal;
         private TextView mTextViewItemClientPhone;
@@ -65,6 +67,8 @@ public class ClientsListFragment extends Fragment {
 
             mTextViewItemClientPersonal = (TextView)itemView.findViewById(R.id.textView_list_item_client_personal);
             mTextViewItemClientPhone = (TextView)itemView.findViewById(R.id.textView_list_item_client_phone);
+
+            itemView.setOnClickListener(this);
         }
 
         private void bindClient(Client client) {
@@ -72,6 +76,12 @@ public class ClientsListFragment extends Fragment {
 
             mTextViewItemClientPersonal.setText(mClient.getPersonal());
             mTextViewItemClientPhone.setText(mClient.getPhone());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = ClientInformationActivity.newIntent(getActivity(), mClient.getId());
+            startActivity(intent);
         }
     }
 

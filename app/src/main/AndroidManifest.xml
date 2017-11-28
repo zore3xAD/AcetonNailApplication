@@ -19,7 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditClientInformationActivity"
+        <activity
+            android:name=".EditClientInformationActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".ClientInformationActivity"
             android:parentActivityName=".MainActivity"/>
     </application>
 
