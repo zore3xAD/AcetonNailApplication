@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.android.zore3x.acetonnailapplication.database.DbSchema.ClientTable;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTable;
 
 /**
  * Created by DobrogorskiyAA on 28.11.2017.
@@ -28,6 +29,15 @@ public class BaseHelper extends SQLiteOpenHelper {
                 + ClientTable.Cols.NAME + ", "
                 + ClientTable.Cols.SURNAME + ", "
                 + ClientTable.Cols.PHONE
+                + ")"
+        );
+
+        db.execSQL("create table " + MasterTable.NAME + "("
+                + " _id integer primary key autoincrement, "
+                + MasterTable.Cols.UUID + ", "
+                + MasterTable.Cols.NAME + ", "
+                + MasterTable.Cols.SURNAME + ", "
+                + MasterTable.Cols.PHONE
                 + ")"
         );
 
