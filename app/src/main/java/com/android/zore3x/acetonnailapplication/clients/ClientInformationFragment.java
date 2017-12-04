@@ -93,6 +93,8 @@ public class ClientInformationFragment extends Fragment {
                 ClientLab.get(getActivity()).delete(mClient);
                 Toast.makeText(getActivity(), "Client " + mClient.getPersonal() + "was deleted", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

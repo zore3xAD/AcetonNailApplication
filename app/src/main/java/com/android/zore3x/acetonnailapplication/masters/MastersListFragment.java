@@ -1,5 +1,6 @@
 package com.android.zore3x.acetonnailapplication.masters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.zore3x.acetonnailapplication.MasterInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
 
 import java.util.List;
@@ -76,13 +78,14 @@ public class MastersListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = MasterInformationActivity.newIntent(getActivity(), mMaster.getId());
+            startActivity(intent);
         }
 
         private void bindMaster(Master master) {
             mMaster = master;
 
-            mTextViewItemMasterPersonal.setText(mMaster.getSurname());
+            mTextViewItemMasterPersonal.setText(mMaster.getPersonal());
             mTextViewItemMasterPhone.setText(mMaster.getPhone());
         }
     }

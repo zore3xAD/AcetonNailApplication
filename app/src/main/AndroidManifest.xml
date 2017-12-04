@@ -30,6 +30,9 @@
             android:name=".EditMasterInformationActivity"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".MasterInformationActivity"
+                  android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

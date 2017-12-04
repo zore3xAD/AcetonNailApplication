@@ -52,7 +52,7 @@ public class MasterLab {
     }
 
     public Master getItem(UUID id) {
-        MasterCursorWrapper cursor = query(MasterTable.Cols.UUID + " = &",
+        MasterCursorWrapper cursor = query(MasterTable.Cols.UUID + " = ?",
                 new String[]{id.toString()});
         try {
             if(cursor.getCount() == 0) {
