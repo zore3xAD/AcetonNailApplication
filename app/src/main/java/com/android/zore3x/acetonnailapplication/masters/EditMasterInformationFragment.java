@@ -1,7 +1,10 @@
 package com.android.zore3x.acetonnailapplication.masters;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.procedure.ProcedureDialog;
 
 import java.util.UUID;
 
@@ -22,12 +26,14 @@ public class EditMasterInformationFragment extends Fragment {
 
     public static final String TAG = "EditMasterFragment";
     private static final String ARG_MASTER_ID = "master_id";
+    private static final int REQUEST_PROCEDURE = 1;
 
     private EditText mEditTextMasterName;
     private EditText mEditTextMasterSurname;
     private EditText mEditTextMasterPhone;
 
     private Button mButtonConfirm;
+    private Button mButtonMasterProcedure;
 
     private Master mMaster;
     private boolean isEditable = false;
@@ -92,6 +98,14 @@ public class EditMasterInformationFragment extends Fragment {
             }
         });
 
+        mButtonMasterProcedure = (Button)v.findViewById(R.id.button_editable_master_procedure);
+        mButtonMasterProcedure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openProcedureFragment();
+            }
+        });
+
         if (isEditable) {
             mEditTextMasterName.setText(mMaster.getName());
             mEditTextMasterSurname.setText(mMaster.getSurname());
@@ -99,5 +113,24 @@ public class EditMasterInformationFragment extends Fragment {
         }
 
         return v;
+    }
+
+    private void openProcedureFragment() {
+        DialogFragment procedureFragment = new ProcedureDialog();
+        procedureFragment.setTargetFragment(this, REQUEST_PROCEDURE);
+        procedureFragment.show(getFragmentManager(), procedureFragment.getClass().getName());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_PROCEDURE:
+                    String res = data.getStringExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
+                    Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 }
