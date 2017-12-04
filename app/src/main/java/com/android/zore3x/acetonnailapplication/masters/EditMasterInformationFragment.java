@@ -14,8 +14,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.database.DbSchema;
+import com.android.zore3x.acetonnailapplication.procedure.Procedure;
 import com.android.zore3x.acetonnailapplication.procedure.ProcedureDialog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,7 +39,10 @@ public class EditMasterInformationFragment extends Fragment {
     private Button mButtonConfirm;
     private Button mButtonMasterProcedure;
 
+    private Button btn;
+
     private Master mMaster;
+    private List<Procedure> mMasterTypeList;
     private boolean isEditable = false;
 
     public static EditMasterInformationFragment newInstance(UUID id) {
@@ -81,6 +88,7 @@ public class EditMasterInformationFragment extends Fragment {
                     mMaster.setName(name);
                     mMaster.setSurname(surname);
                     mMaster.setPhone(phone);
+                    mMaster.setMasterType(mMasterTypeList);
 
                     MasterLab.get(getActivity()).update(mMaster);
                     Toast.makeText(getActivity(), "Master edited", Toast.LENGTH_SHORT).show();
@@ -91,6 +99,8 @@ public class EditMasterInformationFragment extends Fragment {
                     mMaster.setName(name);
                     mMaster.setSurname(surname);
                     mMaster.setPhone(phone);
+                    mMaster.setMasterType(mMasterTypeList);
+
                     MasterLab.get(getActivity()).add(mMaster);
                     Toast.makeText(getActivity(), "Master " + mMaster.getPersonal() + " was added", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
@@ -103,6 +113,14 @@ public class EditMasterInformationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openProcedureFragment();
+            }
+        });
+
+        btn = (Button)v.findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Procedure> masterTypeList = MasterTypeLab.get(getActivity()).getMasterType(mMaster.getId());
             }
         });
 
@@ -127,8 +145,10 @@ public class EditMasterInformationFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_PROCEDURE:
-                    String res = data.getStringExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
-                    Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
+//                    String res = data.getStringExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
+//                    Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
+                    mMasterTypeList = (ArrayList<Procedure>)data.getSerializableExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
+                    int d = 0;
                     break;
             }
         }

@@ -36,4 +36,14 @@ public class DbSchema {
             public static final String TITLE = "title";
         }
     }
+
+    public static final class MasterTypeTable {
+        public static final String NAME = "MasterTypeTable";
+
+        public static final class Cols {
+            public static final String UUID = "uuid";
+            public static final String UUID_MASTER = "uuid_master";
+            public static final String UUID_PROCEDURE = "uuid_procedure";
+        }
+    }
 }

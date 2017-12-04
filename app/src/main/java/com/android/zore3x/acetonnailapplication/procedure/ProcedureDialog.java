@@ -14,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +38,7 @@ public class ProcedureDialog extends DialogFragment {
     private RecyclerView mRecyclerViewProcedureList;
 
     private String mSelectedProcedure;
+    private List<Procedure> mSelectedProcedureList = new ArrayList<>();
 
     private ProcedureAdapter mAdapter;
 
@@ -45,11 +49,11 @@ public class ProcedureDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_fragment_procedure, null);
 
-        mEditTextNewProcedureTitle = (EditText)view.findViewById(R.id.editText_doalog_procedure_add_new_procedure);
-        mRecyclerViewProcedureList = (RecyclerView)view.findViewById(R.id.recyclerView_dialog_fragment_procedure);
+        mEditTextNewProcedureTitle = (EditText) view.findViewById(R.id.editText_doalog_procedure_add_new_procedure);
+        mRecyclerViewProcedureList = (RecyclerView) view.findViewById(R.id.recyclerView_dialog_fragment_procedure);
         mRecyclerViewProcedureList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mButtonAddProcedure = (Button)view.findViewById(R.id.button_dialog_procedure_add);
+        mButtonAddProcedure = (Button) view.findViewById(R.id.button_dialog_procedure_add);
         mButtonAddProcedure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +75,7 @@ public class ProcedureDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        intent.putExtra(TAG_PROCEDURE_SELECTED, mSelectedProcedure);
+                        intent.putExtra(TAG_PROCEDURE_SELECTED, (Serializable) mSelectedProcedureList);
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
                     }
                 })
@@ -87,16 +91,16 @@ public class ProcedureDialog extends DialogFragment {
         return builder.create();
     }
 
-    private class ProcedureHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ProcedureHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTextViewProcedureTitle;
+        private CheckedTextView mTextViewProcedureTitle;
 
         private Procedure mProcedure;
 
         public ProcedureHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mTextViewProcedureTitle = (TextView)itemView;
+            mTextViewProcedureTitle = (CheckedTextView) itemView;
         }
 
         private void bindProcedure(Procedure procedure) {
@@ -106,7 +110,16 @@ public class ProcedureDialog extends DialogFragment {
 
         @Override
         public void onClick(View v) {
-              mSelectedProcedure = mTextViewProcedureTitle.getText().toString();
+            //mSelectedProcedure = mTextViewProcedureTitle.getText().toString();
+            if(mTextViewProcedureTitle.isChecked()) {
+                // если процерура выбрана ее необходима удалить из списка
+                mSelectedProcedureList.remove(mProcedure);
+                mTextViewProcedureTitle.setChecked(false);
+            } else {
+                // если процедура не выбрана добавить в список
+                mSelectedProcedureList.add(mProcedure);
+                mTextViewProcedureTitle.setChecked(true);
+            }
         }
     }
 
@@ -121,7 +134,7 @@ public class ProcedureDialog extends DialogFragment {
         @Override
         public ProcedureHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
 
             return new ProcedureHolder(view);
         }
@@ -146,7 +159,7 @@ public class ProcedureDialog extends DialogFragment {
 
         ProcedureLab procedureLab = ProcedureLab.get(getActivity());
         List<Procedure> procedures = procedureLab.getAll();
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mAdapter = new ProcedureAdapter(procedures);
             mRecyclerViewProcedureList.setAdapter(mAdapter);
         } else {
@@ -154,7 +167,6 @@ public class ProcedureDialog extends DialogFragment {
             mAdapter.notifyDataSetChanged();
         }
     }
-
 
 
 }

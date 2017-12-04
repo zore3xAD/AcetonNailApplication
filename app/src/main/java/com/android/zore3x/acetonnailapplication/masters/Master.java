@@ -1,5 +1,8 @@
 package com.android.zore3x.acetonnailapplication.masters;
 
+import com.android.zore3x.acetonnailapplication.procedure.Procedure;
+
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -12,6 +15,7 @@ public class Master {
     private String mName;
     private String mSurname;
     private String mPhone;
+    private List<Procedure> mMasterType;
 
     public Master() {
         mId = UUID.randomUUID();
@@ -51,5 +55,13 @@ public class Master {
 
     public String getPersonal() {
         return mName + " " + mSurname;
+    }
+
+    public List<Procedure> getMasterType() {
+        return mMasterType;
+    }
+
+    public void setMasterType(List<Procedure> masterType) {
+        mMasterType = masterType;
     }
 }

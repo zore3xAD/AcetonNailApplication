@@ -3,6 +3,7 @@ package com.android.zore3x.acetonnailapplication.masters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.zore3x.acetonnailapplication.database.BaseHelper;
@@ -72,6 +73,7 @@ public class MasterLab {
                 null,
                 values
         );
+        MasterTypeLab.get(mContext).add(master);
     }
 
     public void update(Master master) {

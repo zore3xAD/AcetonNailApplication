@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.android.zore3x.acetonnailapplication.database.DbSchema.ClientTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTable;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTypeTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.ProcedureTable;
 
 /**
@@ -46,6 +47,14 @@ public class BaseHelper extends SQLiteOpenHelper {
                 + " _id integer primary key autoincrement, "
                 + ProcedureTable.Cols.UUID + ", "
                 + ProcedureTable.Cols.TITLE
+                + ")"
+        );
+
+        db.execSQL("create table " + MasterTypeTable.NAME + "( "
+                + " _id integer primary key autoincrement, "
+                + MasterTypeTable.Cols.UUID + ", "
+                + MasterTypeTable.Cols.UUID_MASTER + ", "
+                + MasterTypeTable.Cols.UUID_PROCEDURE
                 + ")"
         );
 
