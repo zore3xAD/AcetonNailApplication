@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
                         return;
                     case MastersListFragment.ID:
                         Log.i(TAG, "Add master");
+                        startActivity(EditMasterInformationActivity.newIntent(getApplication()));
                         return;
                     case TimetableListFragment.ID:
                         Log.i(TAG, "Add new record");
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        getSupportActionBar().setTitle("My clients");
         fillMainContent(ClientsListFragment.newInstance());
     }
 
@@ -106,14 +108,17 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_clients:
                 Log.i(TAG, "Clients tab");
                 fillMainContent(ClientsListFragment.newInstance());
+                getSupportActionBar().setTitle("My clients");
                 break;
             case R.id.nav_masters:
                 Log.i(TAG, "Masters tab");
                 fillMainContent(MastersListFragment.newInstance());
+                getSupportActionBar().setTitle("My masters");
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
                 fillMainContent(TimetableListFragment.newInstance());
+                getSupportActionBar().setTitle("Timetable");
                 break;
         }
 

@@ -66,7 +66,7 @@ public class EditClientInformationFragment extends Fragment {
         mEditTextClientSurname = (EditText)v.findViewById(R.id.editText_editable_client_surname);
         mEditTextClientPhone = (EditText)v.findViewById(R.id.editText_editable_client_phone);
 
-        mButtonConfirm = (Button)v.findViewById(R.id.button_editeble_confirm);
+        mButtonConfirm = (Button)v.findViewById(R.id.button_editeble_client_confirm);
         mButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

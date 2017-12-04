@@ -49,14 +49,14 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <Button
-        android:id="@+id/button_editeble_confirm"
+        android:id="@+id/button_editeble_client_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
         android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/editText_editable_client_phone"
-        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_editable_client_phone"/>
 </android.support.constraint.ConstraintLayout>

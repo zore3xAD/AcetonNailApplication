@@ -48,4 +48,8 @@ public class Master {
     public void setPhone(String phone) {
         mPhone = phone;
     }
+
+    public String getPersonal() {
+        return mName + " " + mSurname;
+    }
 }

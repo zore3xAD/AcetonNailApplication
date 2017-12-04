@@ -29,7 +29,7 @@ public class MasterLab {
         mDatabase = new BaseHelper(mContext).getWritableDatabase();
     }
 
-    public MasterLab get(Context context) {
+    public static MasterLab get(Context context) {
         if(sMasterLab == null) {
             sMasterLab = new MasterLab(context);
         }
