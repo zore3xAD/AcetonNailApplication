@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.R;
@@ -36,10 +37,10 @@ public class EditMasterInformationFragment extends Fragment {
     private EditText mEditTextMasterSurname;
     private EditText mEditTextMasterPhone;
 
+    private TextView mTextViewMasterType;
+
     private Button mButtonConfirm;
     private Button mButtonMasterProcedure;
-
-    private Button btn;
 
     private Master mMaster;
     private List<Procedure> mMasterTypeList;
@@ -64,6 +65,8 @@ public class EditMasterInformationFragment extends Fragment {
         if(masterId != null) {
             mMaster = MasterLab.get(getActivity()).getItem(masterId);
             isEditable = true;
+        } else {
+            mMaster = new Master();
         }
     }
 
@@ -75,6 +78,8 @@ public class EditMasterInformationFragment extends Fragment {
         mEditTextMasterName = (EditText)v.findViewById(R.id.editText_editable_master_name);
         mEditTextMasterSurname = (EditText)v.findViewById(R.id.editText_editable_master_surname);
         mEditTextMasterPhone = (EditText)v.findViewById(R.id.editText_editable_master_phone);
+
+        mTextViewMasterType = (TextView)v.findViewById(R.id.textView_editable_master_type);
 
         mButtonConfirm = (Button)v.findViewById(R.id.button_editable_master_confirm);
         mButtonConfirm.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +100,6 @@ public class EditMasterInformationFragment extends Fragment {
 
                     getActivity().finish();
                 } else {
-                    mMaster = new Master();
                     mMaster.setName(name);
                     mMaster.setSurname(surname);
                     mMaster.setPhone(phone);
@@ -116,18 +120,11 @@ public class EditMasterInformationFragment extends Fragment {
             }
         });
 
-        btn = (Button)v.findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Procedure> masterTypeList = MasterTypeLab.get(getActivity()).getMasterType(mMaster.getId());
-            }
-        });
-
         if (isEditable) {
             mEditTextMasterName.setText(mMaster.getName());
             mEditTextMasterSurname.setText(mMaster.getSurname());
             mEditTextMasterPhone.setText(mMaster.getPhone());
+            mTextViewMasterType.setText(mMaster.getStringMasterType());
         }
 
         return v;
@@ -145,10 +142,9 @@ public class EditMasterInformationFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_PROCEDURE:
-//                    String res = data.getStringExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
-//                    Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
                     mMasterTypeList = (ArrayList<Procedure>)data.getSerializableExtra(ProcedureDialog.TAG_PROCEDURE_SELECTED);
-                    int d = 0;
+                    mMaster.setMasterType(mMasterTypeList);
+                    mTextViewMasterType.setText(mMaster.getStringMasterType());
                     break;
             }
         }

@@ -28,6 +28,7 @@ public class MasterInformationFragment extends Fragment {
 
     private TextView mTextViewMasterPersonal;
     private TextView mTextViewMasterPhone;
+    private TextView mTextViewMasterType;
 
     private Master mMaster;
 
@@ -69,6 +70,7 @@ public class MasterInformationFragment extends Fragment {
 
         mTextViewMasterPersonal = (TextView) v.findViewById(R.id.textView_master_information_personal);
         mTextViewMasterPhone = (TextView) v.findViewById(R.id.textView_master_information_phone);
+        mTextViewMasterType = (TextView)v.findViewById(R.id.textView_master_information_type);
 
         updateUI();
 
@@ -103,5 +105,6 @@ public class MasterInformationFragment extends Fragment {
     private void updateUI() {
         mTextViewMasterPersonal.setText(mMaster.getPersonal());
         mTextViewMasterPhone.setText(mMaster.getPhone());
+        mTextViewMasterType.setText(mMaster.getStringMasterType());
     }
 }

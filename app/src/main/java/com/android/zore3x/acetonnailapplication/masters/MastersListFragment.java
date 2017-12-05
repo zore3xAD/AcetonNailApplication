@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.MasterInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.procedure.Procedure;
 
 import java.util.List;
 
@@ -84,7 +85,11 @@ public class MastersListFragment extends Fragment {
 
         private void bindMaster(Master master) {
             mMaster = master;
-
+            String stringMasterType = "";
+            for(Procedure type: mMaster.getMasterType()) {
+                stringMasterType += type.getTitle() + " ";
+            }
+            mTextViewItemMasterType.setText(stringMasterType);
             mTextViewItemMasterPersonal.setText(mMaster.getPersonal());
             mTextViewItemMasterPhone.setText(mMaster.getPhone());
         }

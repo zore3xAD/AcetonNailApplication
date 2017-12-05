@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.masters.Master;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class ProcedureDialog extends DialogFragment {
 
     private String mSelectedProcedure;
     private List<Procedure> mSelectedProcedureList = new ArrayList<>();
+
+    private Master mMaster;
 
     private ProcedureAdapter mAdapter;
 

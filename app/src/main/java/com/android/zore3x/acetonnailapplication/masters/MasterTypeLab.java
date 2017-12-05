@@ -83,6 +83,12 @@ public class MasterTypeLab {
         }
     }
 
+    public void delete(Master master) {
+        mDatabase.delete(MasterTypeTable.NAME,
+                MasterTypeTable.Cols.UUID_MASTER + " = ?",
+                new String[]{master.getId().toString()});
+    }
+
     private ContentValues getContentValues(String masterId, Procedure procedure) {
         ContentValues values = new ContentValues();
         values.put(MasterTypeTable.Cols.UUID, UUID.randomUUID().toString());

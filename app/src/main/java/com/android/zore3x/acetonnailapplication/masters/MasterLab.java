@@ -38,12 +38,15 @@ public class MasterLab {
     }
 
     public List<Master> getAll() {
+        Master master;
         List<Master>  masters = new ArrayList<>();
         MasterCursorWrapper cursor = query(null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                masters.add(cursor.getMaster());
+                master = cursor.getMaster();
+                master.setMasterType(MasterTypeLab.get(mContext).getMasterType(master.getId()));
+                masters.add(master);
                 cursor.moveToNext();
             }
         } finally {
@@ -60,7 +63,9 @@ public class MasterLab {
                 return null;
             }
             cursor.moveToFirst();
-            return cursor.getMaster();
+            Master master = cursor.getMaster();
+            master.setMasterType(MasterTypeLab.get(mContext).getMasterType(master.getId()));
+            return master;
         } finally {
             cursor.close();
         }
@@ -78,12 +83,14 @@ public class MasterLab {
 
     public void update(Master master) {
         ContentValues values = getContentValues(master);
+        MasterTypeLab.get(mContext).delete(master);
         mDatabase.update(
                 MasterTable.NAME,
                 values,
                 MasterTable.Cols.UUID + " = ?",
                 new String[]{master.getId().toString()}
         );
+        MasterTypeLab.get(mContext).add(master);
     }
 
     public void delete(Master master) {
@@ -92,6 +99,7 @@ public class MasterLab {
                 MasterTable.Cols.UUID + " = ?",
                 new String[]{master.getId().toString()}
         );
+        MasterTypeLab.get(mContext).delete(master);
     }
 
     private MasterCursorWrapper query(String whereCause, String whereArgs[]) {

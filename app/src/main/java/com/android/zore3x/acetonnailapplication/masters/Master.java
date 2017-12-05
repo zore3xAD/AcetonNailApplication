@@ -64,4 +64,12 @@ public class Master {
     public void setMasterType(List<Procedure> masterType) {
         mMasterType = masterType;
     }
+
+    public String getStringMasterType() {
+        String masterType = "";
+        for (Procedure type : mMasterType) {
+            masterType += type.getTitle() + " ";
+        }
+        return masterType;
+    }
 }
