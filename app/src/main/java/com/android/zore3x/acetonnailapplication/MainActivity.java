@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    private static final String SPINNER_ALL_MASTERS = "All";
 
     private Spinner mSpinnerToolbar;
     private MasterTypeSpinnerAdapter mAdapter;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setTitle("My clients");
-//        mSpinnerToolbar.setVisibility(View.INVISIBLE);
+        mSpinnerToolbar.setVisibility(View.INVISIBLE);
         fillMainContent(ClientsListFragment.newInstance());
 
     }
@@ -149,7 +150,11 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Procedure procedure = mAdapter.getItem(position);
-                        fillMainContent(MastersListFragment.newInstance(procedure.getId()));
+                        if(procedure.getTitle().equals(SPINNER_ALL_MASTERS)) {
+                            fillMainContent(MastersListFragment.newInstance());
+                        } else {
+                            fillMainContent(MastersListFragment.newInstance(procedure.getId()));
+                        }
                     }
 
                     @Override
@@ -182,15 +187,22 @@ public class MainActivity extends AppCompatActivity
 
     private class MasterTypeSpinnerAdapter extends ArrayAdapter<Procedure> {
 
-        private List<Procedure> mProcedureList;
+        private List<Procedure> mProcedureList = new ArrayList<>();
 
         public MasterTypeSpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Procedure> objects) {
             super(context, resource, objects);
-            mProcedureList = objects;
+            Procedure stub = new Procedure();
+            stub.setTitle(SPINNER_ALL_MASTERS);
+            mProcedureList.add(stub);
+            mProcedureList.addAll(objects);
         }
 
         public void setProcedureList(List<Procedure> procedures) {
-            mProcedureList = procedures;
+            mProcedureList.clear();
+            Procedure stub = new Procedure();
+            stub.setTitle(SPINNER_ALL_MASTERS);
+            mProcedureList.add(stub);
+            mProcedureList.addAll(procedures);
         }
 
         @Override
