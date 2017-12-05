@@ -1,6 +1,8 @@
 package com.android.zore3x.acetonnailapplication.masters;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,9 +16,14 @@ import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.MasterInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.database.BaseHelper;
+import com.android.zore3x.acetonnailapplication.database.DbSchema;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
+import com.android.zore3x.acetonnailapplication.procedure.ProcedureLab;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by DobrogorskiyAA on 27.11.2017.
@@ -25,11 +32,17 @@ import java.util.List;
 public class MastersListFragment extends Fragment {
 
     public static final String ID = "MastersListFragment";
+    private static final String ARG_PROCEDURE_ID = "procedure_id";
 
     private static final String TAG = "MastersListFragment";
 
     private RecyclerView mRecyclerViewMasterList;
     private MasterAdapter mAdapter;
+
+    private boolean hasSpinselected;
+    private List<Master> mSpinMaster;
+
+    private UUID mProcedureId;
 
     public static MastersListFragment newInstance() {
 
@@ -39,6 +52,30 @@ public class MastersListFragment extends Fragment {
         MastersListFragment fragment = new MastersListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static MastersListFragment newInstance(UUID id) {
+        Bundle args = new Bundle();
+        args.putString("id", ID);
+        args.putSerializable(ARG_PROCEDURE_ID, id);
+
+        MastersListFragment fragment = new MastersListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mProcedureId = (UUID)getArguments().getSerializable(ARG_PROCEDURE_ID);
+
+        if(mProcedureId != null) {
+            mSpinMaster = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
+            int d = 0;
+            hasSpinselected = true;
+        }
+
     }
 
     @Nullable
@@ -56,6 +93,11 @@ public class MastersListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(mProcedureId != null) {
+            mSpinMaster = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
+            int d = 0;
+            hasSpinselected = true;
+        }
         updateUI();
     }
 
@@ -130,6 +172,9 @@ public class MastersListFragment extends Fragment {
     public void updateUI() {
         MasterLab masterLab = MasterLab.get(getActivity());
         List<Master> masters = masterLab.getAll();
+        if(hasSpinselected) {
+            masters = mSpinMaster;
+        }
         if(mAdapter == null) {
             mAdapter = new MasterAdapter(masters);
             mRecyclerViewMasterList.setAdapter(mAdapter);

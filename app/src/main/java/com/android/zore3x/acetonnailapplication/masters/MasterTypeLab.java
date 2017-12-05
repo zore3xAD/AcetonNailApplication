@@ -62,6 +62,33 @@ public class MasterTypeLab {
         return masterType;
     }
 
+    public List<Master> getMasters(UUID procedureId) {
+        List<String> masterIdList = new ArrayList<>();
+        List<Master> masterList = new ArrayList<>();
+        Cursor cursor = mDatabase.query(
+                MasterTypeTable.NAME,
+                new String[]{MasterTypeTable.Cols.UUID_MASTER},
+                MasterTypeTable.Cols.UUID_PROCEDURE + " = ?",
+                new String[]{procedureId.toString()},
+                null,
+                null,
+                null
+        );
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                masterIdList.add(cursor.getString(cursor.getColumnIndex(MasterTypeTable.Cols.UUID_MASTER)));
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        for(String id : masterIdList) {
+            masterList.add(MasterLab.get(mContext).getItem(UUID.fromString(id)));
+        }
+        return masterList;
+    }
+
     private ProcedureCursorWrapper query(String whereCause, String whereArgs[]) {
         Cursor cursor = mDatabase.query(
                 MasterTypeTable.NAME,

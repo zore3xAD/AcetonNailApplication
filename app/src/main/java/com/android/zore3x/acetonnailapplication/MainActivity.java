@@ -1,9 +1,19 @@
 package com.android.zore3x.acetonnailapplication;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,15 +24,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.clients.ClientsListFragment;
+import com.android.zore3x.acetonnailapplication.database.BaseHelper;
 import com.android.zore3x.acetonnailapplication.masters.MastersListFragment;
+import com.android.zore3x.acetonnailapplication.procedure.Procedure;
+import com.android.zore3x.acetonnailapplication.procedure.ProcedureLab;
 import com.android.zore3x.acetonnailapplication.timetable.TimetableListFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+
+    private Spinner mSpinnerToolbar;
+    private MasterTypeSpinnerAdapter mAdapter;
 
     private String mFragmentId;
 
@@ -32,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mSpinnerToolbar = (Spinner)findViewById(R.id.toolbar_spinner);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +90,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setTitle("My clients");
+//        mSpinnerToolbar.setVisibility(View.INVISIBLE);
         fillMainContent(ClientsListFragment.newInstance());
+
     }
 
     @Override
@@ -103,22 +132,37 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         switch (id) {
             case R.id.nav_clients:
                 Log.i(TAG, "Clients tab");
                 fillMainContent(ClientsListFragment.newInstance());
                 getSupportActionBar().setTitle("My clients");
+                mSpinnerToolbar.setVisibility(View.INVISIBLE);
                 break;
             case R.id.nav_masters:
                 Log.i(TAG, "Masters tab");
                 fillMainContent(MastersListFragment.newInstance());
-                getSupportActionBar().setTitle("My masters");
+                getSupportActionBar().setTitle("");
+                mSpinnerToolbar.setVisibility(View.VISIBLE);
+                updateSpin();
+                mSpinnerToolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Procedure procedure = mAdapter.getItem(position);
+                        fillMainContent(MastersListFragment.newInstance(procedure.getId()));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
                 fillMainContent(TimetableListFragment.newInstance());
                 getSupportActionBar().setTitle("Timetable");
+                mSpinnerToolbar.setVisibility(View.INVISIBLE);
                 break;
         }
 
@@ -129,12 +173,71 @@ public class MainActivity extends AppCompatActivity
 
     private void fillMainContent(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
-//        Fragment fragmentContainer = fm.findFragmentById(R.id.fragment_container);
 
-//        fragmentContainer = fragment;
         mFragmentId = fragment.getArguments().getString("id");
         fm.beginTransaction()
                 .replace(R.id.fragment_container_main, fragment)
                 .commit();
     }
+
+    private class MasterTypeSpinnerAdapter extends ArrayAdapter<Procedure> {
+
+        private List<Procedure> mProcedureList;
+
+        public MasterTypeSpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Procedure> objects) {
+            super(context, resource, objects);
+            mProcedureList = objects;
+        }
+
+        public void setProcedureList(List<Procedure> procedures) {
+            mProcedureList = procedures;
+        }
+
+        @Override
+        public int getCount() {
+            return mProcedureList.size();
+        }
+
+        @Nullable
+        @Override
+        public Procedure getItem(int position) {
+            return mProcedureList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            TextView label = (TextView)getLayoutInflater().inflate(android.R.layout.simple_spinner_item, parent, false);
+            label.setTextColor(Color.WHITE);
+            label.setText(mProcedureList.get(position).getTitle());
+
+            return label;
+        }
+
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            TextView label = (TextView)getLayoutInflater().inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+            label.setText(mProcedureList.get(position).getTitle());
+
+            return label;
+        }
+    }
+
+    public void updateSpin() {
+        ProcedureLab procedureLab = ProcedureLab.get(getApplication());
+        List<Procedure> procedures = procedureLab.getAll();
+        if(mAdapter == null) {
+            mAdapter = new MasterTypeSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, procedures);
+            mSpinnerToolbar.setAdapter(mAdapter);
+        } else {
+            mAdapter.setProcedureList(procedures);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
