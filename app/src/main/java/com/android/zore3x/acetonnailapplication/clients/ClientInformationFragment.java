@@ -46,6 +46,7 @@ public class ClientInformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // вывод из арггументов фрагмента ИД клиента для вывода на экран информации
         UUID clientId = (UUID)getArguments().getSerializable(ARG_CLIENT_ID);
         if(clientId != null) {
             mClient = ClientLab.get(getActivity()).getItem(clientId);
@@ -84,11 +85,13 @@ public class ClientInformationFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // нажатие на кнопку меню "Редактировать"
             case R.id.menu_item_client_edit:
                 Intent intent = EditClientInformationActivity.newIntent(getActivity(), mClient.getId());
                 startActivity(intent);
 
                 return true;
+            // нажатие на кнопку меню "Удалить"
             case R.id.menu_item_client_delete:
                 ClientLab.get(getActivity()).delete(mClient);
                 Toast.makeText(getActivity(), "Client " + mClient.getPersonal() + "was deleted", Toast.LENGTH_SHORT).show();
@@ -100,6 +103,7 @@ public class ClientInformationFragment extends Fragment {
         }
     }
 
+    // обноаление содержимого активности
     private void updateUI() {
         mTextViewClientPersonal.setText(mClient.getPersonal());
         mTextViewClientPhone.setText(mClient.getPhone());

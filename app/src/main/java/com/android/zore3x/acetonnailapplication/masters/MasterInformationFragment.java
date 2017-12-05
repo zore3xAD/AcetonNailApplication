@@ -47,6 +47,7 @@ public class MasterInformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // вывод ИД мастера из аргументов фрагмента для дальнейшей выборки мастера из базы даннных
         UUID masterId = (UUID) getArguments().getSerializable(ARG_MASTER_ID);
         if (masterId != null) {
             mMaster = MasterLab.get(getActivity()).getItem(masterId);
@@ -86,12 +87,16 @@ public class MasterInformationFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // обработка нажатия на кнопку меню "Редактировать"
             case R.id.menu_item_master_edit:
+                // запуск активности с выбранным мастеров
                 Intent intent = EditMasterInformationActivity.newIntent(getActivity(), mMaster.getId());
                 startActivity(intent);
 
                 return true;
+            // обработка нажатия на кнопку меню "Удаить"
             case R.id.menu_item_master_delete:
+                // удаление мастера из базы данных
                 MasterLab.get(getActivity()).delete(mMaster);
                 Toast.makeText(getActivity(), "master " + mMaster.getPersonal() + " was deleted", Toast.LENGTH_SHORT).show();
                 getActivity().finish();

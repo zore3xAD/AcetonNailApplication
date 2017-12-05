@@ -49,7 +49,9 @@ public class EditClientInformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // вывод из аргументов аргументов фрагмента ИД клиента
         UUID clientId = (UUID) getArguments().getSerializable(ARG_CLIENT_ID);
+        // если данные содержатся то достаем из базы клиента по ИД, и устанавливаем флаг редактирования записи
         if(clientId != null) {
             mClient = ClientLab.get(getActivity()).getItem(clientId);
             isEditable = true;
@@ -67,6 +69,7 @@ public class EditClientInformationFragment extends Fragment {
         mEditTextClientPhone = (EditText)v.findViewById(R.id.editText_editable_client_phone);
 
         mButtonConfirm = (Button)v.findViewById(R.id.button_editeble_client_confirm);
+        // обработка нажатия кнопки подтверждения
         mButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +78,8 @@ public class EditClientInformationFragment extends Fragment {
                 String surname = mEditTextClientSurname.getText().toString();
                 String phone = mEditTextClientPhone.getText().toString();
 
+                // если фрагмент в режиме редактирования то обновляем запись в базе
+                // иначе добвляем запись в базу
                 if(isEditable) {
                     mClient.setName(name);
                     mClient.setSurname(surname);
@@ -93,7 +98,7 @@ public class EditClientInformationFragment extends Fragment {
                 }
             }
         });
-
+        // заполняем поля ввода информацией иели режим редактирования
         if (isEditable) {
             mEditTextClientName.setText(mClient.getName());
             mEditTextClientSurname.setText(mClient.getSurname());

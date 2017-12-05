@@ -61,7 +61,10 @@ public class EditMasterInformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // достааем из аргументов фрагмента ИД мастера
         UUID masterId = (UUID)getArguments().getSerializable(ARG_MASTER_ID);
+        // если данные присутствуют то выбераем необходимую запись из базы данных и устанавливаем флаг редактирование
+        // иначе создаем нового мастера
         if(masterId != null) {
             mMaster = MasterLab.get(getActivity()).getItem(masterId);
             isEditable = true;
@@ -82,6 +85,7 @@ public class EditMasterInformationFragment extends Fragment {
         mTextViewMasterType = (TextView)v.findViewById(R.id.textView_editable_master_type);
 
         mButtonConfirm = (Button)v.findViewById(R.id.button_editable_master_confirm);
+        // обработка нажатия на кнопку подтверждения
         mButtonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +93,8 @@ public class EditMasterInformationFragment extends Fragment {
                 String surname = mEditTextMasterSurname.getText().toString();
                 String phone = mEditTextMasterPhone.getText().toString();
 
+                // если Редактирование то обновляем запись в базе данных
+                // иначе добавляем новую запись
                 if(isEditable) {
                     mMaster.setName(name);
                     mMaster.setSurname(surname);
@@ -111,15 +117,17 @@ public class EditMasterInformationFragment extends Fragment {
                 }
             }
         });
-
+        // обработка нажатия на кнопку выбора типа мастера
         mButtonMasterProcedure = (Button)v.findViewById(R.id.button_editable_master_procedure);
         mButtonMasterProcedure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // открытие диалогового окна с выбором типа мастера
                 openProcedureFragment();
             }
         });
 
+        // заполнени информацией о выбранном мастере полей ввода
         if (isEditable) {
             mEditTextMasterName.setText(mMaster.getName());
             mEditTextMasterSurname.setText(mMaster.getSurname());
@@ -130,12 +138,14 @@ public class EditMasterInformationFragment extends Fragment {
         return v;
     }
 
+    // функция открытия диалогового окна
     private void openProcedureFragment() {
         DialogFragment procedureFragment = new ProcedureDialog();
         procedureFragment.setTargetFragment(this, REQUEST_PROCEDURE);
         procedureFragment.show(getFragmentManager(), procedureFragment.getClass().getName());
     }
 
+    // возвращение результата выбора типа мастера
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

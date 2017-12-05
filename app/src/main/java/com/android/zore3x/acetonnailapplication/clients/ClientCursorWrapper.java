@@ -22,6 +22,7 @@ public class ClientCursorWrapper extends CursorWrapper {
         super(cursor);
     }
 
+    // возвращает сформированный объект Client из курсора
     public Client getClient() {
 
         String uuidString = getString(getColumnIndex(ClientTable.Cols.UUID));

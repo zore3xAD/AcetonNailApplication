@@ -1,14 +1,11 @@
 package com.android.zore3x.acetonnailapplication.masters;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +13,8 @@ import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.MasterInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
-import com.android.zore3x.acetonnailapplication.database.BaseHelper;
-import com.android.zore3x.acetonnailapplication.database.DbSchema;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
-import com.android.zore3x.acetonnailapplication.procedure.ProcedureLab;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,8 +32,7 @@ public class MastersListFragment extends Fragment {
     private RecyclerView mRecyclerViewMasterList;
     private MasterAdapter mAdapter;
 
-    private boolean hasSpinselected;
-    private List<Master> mSpinMaster;
+    private List<Master> mMasterList;
 
     private UUID mProcedureId;
 
@@ -48,6 +40,7 @@ public class MastersListFragment extends Fragment {
 
         Bundle args = new Bundle();
         args.putString("id", ID);
+
 
         MastersListFragment fragment = new MastersListFragment();
         fragment.setArguments(args);
@@ -68,12 +61,15 @@ public class MastersListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // возврат из аргументов фрагмента ИД типа мастера для отображения выбраного типа
         mProcedureId = (UUID)getArguments().getSerializable(ARG_PROCEDURE_ID);
 
         if(mProcedureId != null) {
-            mSpinMaster = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
-            int d = 0;
-            hasSpinselected = true;
+            // если есть выбранный тип мастера выводим всех мастеров данного типа
+            mMasterList = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
+        } else {
+            // если тип не выбран выводим всех мастеров всех типов
+            mMasterList = MasterLab.get(getActivity()).getAll();
         }
 
     }
@@ -94,9 +90,11 @@ public class MastersListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(mProcedureId != null) {
-            mSpinMaster = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
-            int d = 0;
-            hasSpinselected = true;
+            // если есть выбранный тип мастера выводим всех мастеров данного типа
+            mMasterList = MasterTypeLab.get(getActivity()).getMasters(mProcedureId);
+        } else {
+            // если тип не выбран выводим всех мастеров всех типов
+            mMasterList = MasterLab.get(getActivity()).getAll();
         }
         updateUI();
     }
@@ -170,16 +168,11 @@ public class MastersListFragment extends Fragment {
     }
 
     public void updateUI() {
-        MasterLab masterLab = MasterLab.get(getActivity());
-        List<Master> masters = masterLab.getAll();
-        if(hasSpinselected) {
-            masters = mSpinMaster;
-        }
         if(mAdapter == null) {
-            mAdapter = new MasterAdapter(masters);
+            mAdapter = new MasterAdapter(mMasterList);
             mRecyclerViewMasterList.setAdapter(mAdapter);
         } else {
-            mAdapter.setMasters(masters);
+            mAdapter.setMasters(mMasterList);
             mAdapter.notifyDataSetChanged();
         }
     }
