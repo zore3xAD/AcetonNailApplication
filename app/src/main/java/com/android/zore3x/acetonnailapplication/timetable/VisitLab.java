@@ -29,7 +29,7 @@ public class VisitLab {
         mDatabase = new BaseHelper(mContext).getWritableDatabase();
     }
 
-    public VisitLab get(Context context) {
+    public static VisitLab get(Context context) {
         if(sVisitLab == null) {
             sVisitLab = new VisitLab(context);
         }

@@ -7,9 +7,11 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.test.MoreAsserts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -24,6 +26,7 @@ import com.android.zore3x.acetonnailapplication.procedure.Procedure;
 import com.android.zore3x.acetonnailapplication.procedure.ProcedureLab;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -42,6 +45,11 @@ public class EditTimetableFragment extends Fragment {
     private ClientSpinnerAdapter mClientSpinnerAdapter;
     private ProcedureSpinnerAdapter mProcedureSpinnerAdapter;
 
+    private Client mClient;
+    private Master mMaster;
+    private Procedure mProcedure;
+    private Visit mVisit;
+
     public static EditTimetableFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -51,16 +59,75 @@ public class EditTimetableFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mVisit = new Visit();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_visit, container, false);
 
         mSpinnerMaster = (Spinner)view.findViewById(R.id.spinner_edit_visit_master);
+        mSpinnerMaster.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mMaster = mMasterSpinnerAdapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         mSpinnerClient = (Spinner)view.findViewById(R.id.spinner_edit_visit_client);
+        mSpinnerClient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mClient = mClientSpinnerAdapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         mSpinnerProcedure = (Spinner)view.findViewById(R.id.spinner_edit_visit_procedure);
+        mSpinnerProcedure.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mProcedure = mProcedureSpinnerAdapter.getItem(position);
+                List<Master> masters = MasterLab.get(getActivity()).getMastersWithType(mProcedure.getId());
+                if(mMasterSpinnerAdapter == null) {
+                    mMasterSpinnerAdapter = new MasterSpinnerAdapter(getActivity(), android.R.layout.simple_spinner_item, masters);
+                    mSpinnerMaster.setAdapter(mMasterSpinnerAdapter);
+                } else {
+                    mMasterSpinnerAdapter.setMasterList(masters);
+                    mMasterSpinnerAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mButtonConfirm = (Button)view.findViewById(R.id.button_edit_visit_confirm);
+        mButtonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVisit.setClient(mClient);
+                mVisit.setProcedure(mProcedure);
+                mVisit.setMaster(mMaster);
+                // временное решение устанавливать текущую дату
+                mVisit.setDate(Calendar.getInstance().getTime());
+                VisitLab.get(getActivity()).add(mVisit);
+            }
+        });
 
         updateSpin();
 

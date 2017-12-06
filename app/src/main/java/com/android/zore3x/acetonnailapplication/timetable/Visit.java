@@ -1,5 +1,7 @@
 package com.android.zore3x.acetonnailapplication.timetable;
 
+import android.text.format.DateFormat;
+
 import com.android.zore3x.acetonnailapplication.clients.Client;
 import com.android.zore3x.acetonnailapplication.masters.Master;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
@@ -61,5 +63,13 @@ public class Visit {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public String getStringTime() {
+        return (String) DateFormat.format("HH:mm", getDate());
+    }
+
+    public String getStringDate() {
+        return (String) DateFormat.format("dd.MM.yy", getDate());
     }
 }

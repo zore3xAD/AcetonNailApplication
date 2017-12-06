@@ -55,10 +55,9 @@ public class MasterLab {
         return masters;
     }
 
-//    public List<Master> getAll(UUID procedureId) {
-//        Master master;
-//        List<Master> masters = new ArrayList<>();
-//    }
+    public List<Master> getMastersWithType(UUID procedureId) {
+        return MasterTypeLab.get(mContext).getMasters(procedureId);
+    }
 
     public Master getItem(UUID id) {
         MasterCursorWrapper cursor = query(MasterTable.Cols.UUID + " = ?",

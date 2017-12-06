@@ -81,7 +81,7 @@ public class ProcedureLab {
     public void delete(Procedure procedure) {
         mDatabase.delete(
                 ProcedureTable.NAME,
-                ProcedureTable.Cols.TITLE + " = ?",
+                ProcedureTable.Cols.UUID + " = ?",
                 new String[]{procedure.getId().toString()}
         );
     }

@@ -59,15 +59,15 @@ public class BaseHelper extends SQLiteOpenHelper {
                 + ")"
         );
 
-//        db.execSQL("create table " + VisitTable.NAME + "("
-//                + "_id integer primary key autoincrement, "
-//                + VisitTable.Cols.UUID + ", "
-//                + VisitTable.Cols.UUID_MASTER + ", "
-//                + VisitTable.Cols.UUID_CLIENT + ", "
-//                + VisitTable.Cols.UUID_PROCEDURE + ", "
-//                + VisitTable.Cols.DATE + ", "
-//                + ")"
-//        );
+        db.execSQL("create table " + VisitTable.NAME + "("
+                + "_id integer primary key autoincrement, "
+                + VisitTable.Cols.UUID + ", "
+                + VisitTable.Cols.UUID_MASTER + ", "
+                + VisitTable.Cols.UUID_CLIENT + ", "
+                + VisitTable.Cols.UUID_PROCEDURE + ", "
+                + VisitTable.Cols.DATE
+                + ")"
+        );
 
     }
 

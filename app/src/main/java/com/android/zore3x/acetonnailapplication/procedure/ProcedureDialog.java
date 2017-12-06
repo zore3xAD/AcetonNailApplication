@@ -102,8 +102,17 @@ public class ProcedureDialog extends DialogFragment {
 
         public ProcedureHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             mTextViewProcedureTitle = (CheckedTextView) itemView;
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ProcedureLab.get(getActivity()).delete(mProcedure);
+                    updateUI();
+
+                    return true;
+                }
+            });
         }
 
         private void bindProcedure(Procedure procedure) {
