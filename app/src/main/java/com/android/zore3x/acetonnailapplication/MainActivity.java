@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity
                         return;
                     case TimetableListFragment.ID:
                         Log.i(TAG, "Add new record");
+                        startActivity(EditTimetableActivity.newIntent(getApplication()));
                 }
             }
         });

@@ -8,6 +8,7 @@ import com.android.zore3x.acetonnailapplication.database.DbSchema.ClientTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTypeTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.ProcedureTable;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitTable;
 
 /**
  * Created by DobrogorskiyAA on 28.11.2017.
@@ -57,6 +58,16 @@ public class BaseHelper extends SQLiteOpenHelper {
                 + MasterTypeTable.Cols.UUID_PROCEDURE
                 + ")"
         );
+
+//        db.execSQL("create table " + VisitTable.NAME + "("
+//                + "_id integer primary key autoincrement, "
+//                + VisitTable.Cols.UUID + ", "
+//                + VisitTable.Cols.UUID_MASTER + ", "
+//                + VisitTable.Cols.UUID_CLIENT + ", "
+//                + VisitTable.Cols.UUID_PROCEDURE + ", "
+//                + VisitTable.Cols.DATE + ", "
+//                + ")"
+//        );
 
     }
 

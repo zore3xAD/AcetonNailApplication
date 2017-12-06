@@ -46,4 +46,16 @@ public class DbSchema {
             public static final String UUID_PROCEDURE = "uuid_procedure";
         }
     }
+
+    public static final class VisitTable {
+        public static final String NAME = "VisitTable";
+
+        public static final class Cols {
+            public static final String UUID = "UUID";
+            public static final String UUID_CLIENT = "UUID_CLIENT";
+            public static final String UUID_MASTER = "UUID_MASTER";
+            public static final String UUID_PROCEDURE = "UUID_PROCEDURE";
+            public static final String DATE = "DATE";
+        }
+    }
 }

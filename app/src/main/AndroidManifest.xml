@@ -33,6 +33,9 @@
         <activity android:name=".MasterInformationActivity"
                   android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".EditTimetableActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>
