@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.TimetableInformationActivity;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class TimetableListFragment extends Fragment {
         updateUI();
     }
 
-    private class TimetableHolder extends RecyclerView.ViewHolder{
+    private class TimetableHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTextViewClientPersonal;
         private TextView mTextViewMasterPersonal;
@@ -74,7 +75,7 @@ public class TimetableListFragment extends Fragment {
             mTextViewVisitDate = (TextView)itemView.findViewById(R.id.textView_list_item_timetable_visit_date);
             mTextViewVisitTime = (TextView)itemView.findViewById(R.id.textView_list_item_timetable_visit_time);
 
-//            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         private void bindVisit(Visit visit) {
@@ -86,6 +87,10 @@ public class TimetableListFragment extends Fragment {
             mTextViewVisitTime.setText(mVisit.getStringTime());
         }
 
+        @Override
+        public void onClick(View v) {
+            startActivity(TimetableInformationActivity.newIntent(getActivity(), mVisit.getId()));
+        }
     }
 
     private class TimetableAdapter extends RecyclerView.Adapter<TimetableHolder> {

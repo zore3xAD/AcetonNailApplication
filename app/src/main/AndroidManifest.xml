@@ -30,10 +30,16 @@
             android:name=".EditMasterInformationActivity"
             android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".MasterInformationActivity"
-                  android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".MasterInformationActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".EditTimetableActivity"
+        <activity
+            android:name=".EditTimetableActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".TimetableInformationActivity"
             android:parentActivityName=".MainActivity">
         </activity>
     </application>
