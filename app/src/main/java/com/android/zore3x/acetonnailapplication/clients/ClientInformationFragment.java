@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +28,6 @@ public class ClientInformationFragment extends Fragment {
 
     private static final String ARG_CLIENT_ID = "client_id";
 
-    private TextView mTextViewClientPersonal;
     private TextView mTextViewClientPhone;
 
     private Client mClient;
@@ -68,7 +69,10 @@ public class ClientInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_client_information, container, false);
 
-        mTextViewClientPersonal = (TextView)v.findViewById(R.id.textView_client_information_personal);
+        Toolbar toolbar = (Toolbar)v.findViewById(R.id.toolbar_client_information);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mTextViewClientPhone = (TextView)v.findViewById(R.id.textView_client_information_phone);
 
         updateUI();
@@ -105,7 +109,7 @@ public class ClientInformationFragment extends Fragment {
 
     // обноаление содержимого активности
     private void updateUI() {
-        mTextViewClientPersonal.setText(mClient.getPersonal());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mClient.getPersonal());
         mTextViewClientPhone.setText(mClient.getPhone());
     }
 }
