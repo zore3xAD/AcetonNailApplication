@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.zore3x.acetonnailapplication.MainActivity;
 import com.android.zore3x.acetonnailapplication.MasterInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
@@ -77,7 +80,8 @@ public class MastersListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_recycler_view_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_masters_list, container, false);
+
         mRecyclerViewMasterList = (RecyclerView)v.findViewById(R.id.recyclerView_list);
         mRecyclerViewMasterList.setLayoutManager(new LinearLayoutManager(getActivity()));
 

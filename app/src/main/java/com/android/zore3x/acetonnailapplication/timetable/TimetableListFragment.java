@@ -42,7 +42,7 @@ public class TimetableListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(TAG, "Create timetable fragment");
-        View v = inflater.inflate(R.layout.fragment_recycler_view_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_timetable_list, container, false);
 
         mRecyclerViewTimetableList = (RecyclerView)v.findViewById(R.id.recyclerView_list);
         mRecyclerViewTimetableList.setLayoutManager(new LinearLayoutManager(getActivity()));

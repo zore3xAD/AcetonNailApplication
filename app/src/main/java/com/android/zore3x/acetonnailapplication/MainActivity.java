@@ -52,12 +52,14 @@ public class MainActivity extends AppCompatActivity
 
     private String mFragmentId;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         mSpinnerToolbar = (Spinner)findViewById(R.id.toolbar_spinner);
 
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -92,9 +94,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getSupportActionBar().setTitle("My clients");
-        mSpinnerToolbar.setVisibility(View.INVISIBLE);
+        mSpinnerToolbar.setVisibility(View.GONE);
         fillMainContent(ClientsListFragment.newInstance());
-
     }
 
     @Override
@@ -137,20 +138,27 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_clients:
                 Log.i(TAG, "Clients tab");
+                // отображаем фрагмент со всеми клиентами
                 fillMainContent(ClientsListFragment.newInstance());
+                // убираем из видимости Спиннер выбора типа мастера
+                mSpinnerToolbar.setVisibility(View.GONE);
                 getSupportActionBar().setTitle("My clients");
-                mSpinnerToolbar.setVisibility(View.INVISIBLE);
                 break;
             case R.id.nav_masters:
                 Log.i(TAG, "Masters tab");
+                // отображаем фрагмент со всеми мастерами
                 fillMainContent(MastersListFragment.newInstance());
-                getSupportActionBar().setTitle("");
+                // делаем видимым Спиннер с выбором типа мастера
                 mSpinnerToolbar.setVisibility(View.VISIBLE);
+                getSupportActionBar().setTitle("");
+                // обновляем содержимое спиннера
                 updateSpin();
+                // назначем слушателя на выбор элемента из спиннера
                 mSpinnerToolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Procedure procedure = mAdapter.getItem(position);
+
                         if(procedure.getTitle().equals(SPINNER_ALL_MASTERS)) {
                             fillMainContent(MastersListFragment.newInstance());
                         } else {
@@ -166,9 +174,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
+                mSpinnerToolbar.setVisibility(View.GONE);
                 fillMainContent(TimetableListFragment.newInstance());
                 getSupportActionBar().setTitle("Timetable");
-                mSpinnerToolbar.setVisibility(View.INVISIBLE);
                 break;
         }
 
