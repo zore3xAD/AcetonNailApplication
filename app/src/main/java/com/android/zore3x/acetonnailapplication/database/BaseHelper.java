@@ -8,6 +8,7 @@ import com.android.zore3x.acetonnailapplication.database.DbSchema.ClientTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.MasterTypeTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.ProcedureTable;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitStatusTable;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitTable;
 
 /**
@@ -60,12 +61,20 @@ public class BaseHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("create table " + VisitTable.NAME + "("
-                + "_id integer primary key autoincrement, "
+                + " _id integer primary key autoincrement, "
                 + VisitTable.Cols.UUID + ", "
                 + VisitTable.Cols.UUID_MASTER + ", "
                 + VisitTable.Cols.UUID_CLIENT + ", "
                 + VisitTable.Cols.UUID_PROCEDURE + ", "
                 + VisitTable.Cols.DATE
+                + ")"
+        );
+
+        db.execSQL("create table " + VisitStatusTable.NAME + "("
+                + " _id integer primary key autoincrement, "
+                + VisitStatusTable.Cols.UUID + ", "
+                + VisitStatusTable.Cols.UUID_VISIT + ", "
+                + VisitStatusTable.Cols.STATUS
                 + ")"
         );
 

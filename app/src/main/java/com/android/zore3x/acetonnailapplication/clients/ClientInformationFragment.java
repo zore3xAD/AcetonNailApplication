@@ -3,6 +3,8 @@ package com.android.zore3x.acetonnailapplication.clients;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.EditClientInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.timetable.NewVisitDialog;
 
 import java.util.UUID;
 
@@ -29,6 +32,8 @@ public class ClientInformationFragment extends Fragment {
     private static final String ARG_CLIENT_ID = "client_id";
 
     private TextView mTextViewClientPhone;
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    FloatingActionButton mFloatingActionButtonNewVisit;
 
     private Client mClient;
 
@@ -73,7 +78,17 @@ public class ClientInformationFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) v.findViewById(R.id.collapsing_toolbar);
+
         mTextViewClientPhone = (TextView)v.findViewById(R.id.textView_client_information_phone);
+        mFloatingActionButtonNewVisit = (FloatingActionButton)v.findViewById(R.id.fab_write_client_to_visit);
+        mFloatingActionButtonNewVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewVisitDialog dialog = new NewVisitDialog();
+                dialog.show(getFragmentManager(), dialog.getClass().getName());
+            }
+        });
 
         updateUI();
 
@@ -109,7 +124,8 @@ public class ClientInformationFragment extends Fragment {
 
     // обноаление содержимого активности
     private void updateUI() {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mClient.getPersonal());
+        mCollapsingToolbarLayout.setTitle(mClient.getPersonal());
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mClient.getPersonal());
         mTextViewClientPhone.setText(mClient.getPhone());
     }
 }
