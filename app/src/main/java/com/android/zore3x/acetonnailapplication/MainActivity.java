@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.clients.ClientsListFragment;
 import com.android.zore3x.acetonnailapplication.database.BaseHelper;
+import com.android.zore3x.acetonnailapplication.masters.MasterTypeSpinnerAdapter;
 import com.android.zore3x.acetonnailapplication.masters.MastersListFragment;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
 import com.android.zore3x.acetonnailapplication.procedure.ProcedureLab;
@@ -192,61 +193,6 @@ public class MainActivity extends AppCompatActivity
         fm.beginTransaction()
                 .replace(R.id.fragment_container_main, fragment)
                 .commit();
-    }
-
-    private class MasterTypeSpinnerAdapter extends ArrayAdapter<Procedure> {
-
-        private List<Procedure> mProcedureList = new ArrayList<>();
-
-        public MasterTypeSpinnerAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Procedure> objects) {
-            super(context, resource, objects);
-            Procedure stub = new Procedure();
-            stub.setTitle(SPINNER_ALL_MASTERS);
-            mProcedureList.add(stub);
-            mProcedureList.addAll(objects);
-        }
-
-        public void setProcedureList(List<Procedure> procedures) {
-            mProcedureList.clear();
-            Procedure stub = new Procedure();
-            stub.setTitle(SPINNER_ALL_MASTERS);
-            mProcedureList.add(stub);
-            mProcedureList.addAll(procedures);
-        }
-
-        @Override
-        public int getCount() {
-            return mProcedureList.size();
-        }
-
-        @Nullable
-        @Override
-        public Procedure getItem(int position) {
-            return mProcedureList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            TextView label = (TextView)getLayoutInflater().inflate(android.R.layout.simple_spinner_item, parent, false);
-            label.setTextColor(Color.WHITE);
-            label.setText(mProcedureList.get(position).getTitle());
-
-            return label;
-        }
-
-        @Override
-        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            TextView label = (TextView)getLayoutInflater().inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
-            label.setText(mProcedureList.get(position).getTitle());
-
-            return label;
-        }
     }
 
     public void updateSpin() {

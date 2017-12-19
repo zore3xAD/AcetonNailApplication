@@ -85,7 +85,7 @@ public class ClientInformationFragment extends Fragment {
         mFloatingActionButtonNewVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewVisitDialog dialog = new NewVisitDialog();
+                NewVisitDialog dialog = NewVisitDialog.newInstance(mClient.getId());
                 dialog.show(getFragmentManager(), dialog.getClass().getName());
             }
         });
