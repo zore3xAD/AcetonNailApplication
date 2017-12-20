@@ -47,6 +47,8 @@ public class TimetableListFragment extends Fragment {
         mRecyclerViewTimetableList = (RecyclerView)v.findViewById(R.id.recyclerView_list);
         mRecyclerViewTimetableList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        List<Visit> visits = VisitStatusLab.get(getActivity()).getAll();
+
         updateUI();
 
         return v;

@@ -62,12 +62,11 @@ public class DbSchema {
     public static final class VisitStatusTable {
         public static final String NAME = "VisitStatusTable";
 
-        public static final String STATUS_OK = "1";
-        public static final String STATUS_WAIT = "2";
-        public static final String STATUS_CANCEL = "3";
+        public static final int STATUS_OK = 1;
+        public static final int STATUS_WAIT = 2;
+        public static final int STATUS_CANCEL = 3;
 
         public static final class Cols {
-            public static final String UUID = "uuid";
             public static final String UUID_VISIT = "uuid_visit";
             public static final String STATUS = "status";
         }

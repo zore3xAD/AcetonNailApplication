@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.android.zore3x.acetonnailapplication.R;
 import com.android.zore3x.acetonnailapplication.clients.Client;
 import com.android.zore3x.acetonnailapplication.clients.ClientLab;
+import com.android.zore3x.acetonnailapplication.database.DbSchema;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitStatusTable;
 import com.android.zore3x.acetonnailapplication.masters.Master;
 import com.android.zore3x.acetonnailapplication.masters.MasterLab;
 import com.android.zore3x.acetonnailapplication.masters.MasterTypeSpinnerAdapter;
@@ -166,7 +168,9 @@ public class NewVisitDialog extends DialogFragment {
                         mVisit.setClient(mClient);
                         mVisit.setMaster(mMaster);
                         mVisit.setProcedure(mProcedure);
+                        mVisit.setStatus(VisitStatusTable.STATUS_WAIT);
                         VisitLab.get(getActivity()).add(mVisit);
+                        VisitStatusLab.get(getActivity()).add(mVisit);
                         dismiss();
                     }
                 })

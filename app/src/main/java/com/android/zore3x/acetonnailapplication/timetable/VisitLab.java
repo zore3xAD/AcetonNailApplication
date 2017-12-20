@@ -51,6 +51,27 @@ public class VisitLab {
         return visits;
     }
 
+    public List<Visit> getAllFromClient(UUID clientId) {
+        List<Visit> visits = new ArrayList<>();
+        VisitCursorWrapper cursor = query(
+                VisitTable.Cols.UUID_CLIENT + " = ?",
+                new String[]{clientId.toString()}
+                );
+        try {
+            if(cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                visits.add(cursor.getVisit());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return visits;
+    }
+
     public Visit getItem(UUID visitId) {
         VisitCursorWrapper cursor = query(VisitTable.Cols.UUID + " = ?",
                 new String[]{visitId.toString()});

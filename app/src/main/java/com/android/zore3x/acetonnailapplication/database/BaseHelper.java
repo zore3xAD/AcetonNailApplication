@@ -72,7 +72,6 @@ public class BaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table " + VisitStatusTable.NAME + "("
                 + " _id integer primary key autoincrement, "
-                + VisitStatusTable.Cols.UUID + ", "
                 + VisitStatusTable.Cols.UUID_VISIT + ", "
                 + VisitStatusTable.Cols.STATUS
                 + ")"

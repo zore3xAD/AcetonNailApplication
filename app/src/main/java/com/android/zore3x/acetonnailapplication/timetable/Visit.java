@@ -3,6 +3,8 @@ package com.android.zore3x.acetonnailapplication.timetable;
 import android.text.format.DateFormat;
 
 import com.android.zore3x.acetonnailapplication.clients.Client;
+import com.android.zore3x.acetonnailapplication.database.DbSchema;
+import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitStatusTable;
 import com.android.zore3x.acetonnailapplication.masters.Master;
 import com.android.zore3x.acetonnailapplication.procedure.Procedure;
 
@@ -20,9 +22,11 @@ public class Visit {
     private Client mClient;
     private Procedure mProcedure;
     private Date mDate;
+    private int mStatus;
 
     public Visit() {
         mId = UUID.randomUUID();
+        mStatus = VisitStatusTable.STATUS_WAIT;
     }
 
     public Visit(UUID id) {
@@ -63,6 +67,14 @@ public class Visit {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public int getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(int status) {
+        mStatus = status;
     }
 
     public String getStringTime() {
