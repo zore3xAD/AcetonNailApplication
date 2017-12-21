@@ -164,6 +164,7 @@ public class ClientInformationFragment extends Fragment {
         TextView mTextViewProcedure;
         TextView mTextViewVisitDate;
         TextView mTextViewVisitTime;
+        TextView mTextViewVisitMaster;
 
         public ClientVisitHistoryHolder(View itemView) {
             super(itemView);
@@ -173,6 +174,7 @@ public class ClientInformationFragment extends Fragment {
             mTextViewProcedure = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_procedure);
             mTextViewVisitDate = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_date);
             mTextViewVisitTime = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_time);
+            mTextViewVisitMaster = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_master);
 
         }
 
@@ -181,6 +183,7 @@ public class ClientInformationFragment extends Fragment {
             mTextViewVisitTime.setText(visit.getStringTime());
             mTextViewVisitDate.setText(visit.getStringDate());
             mTextViewProcedure.setText(visit.getProcedure().getTitle());
+            mTextViewVisitMaster.setText(visit.getMaster().getPersonal());
 
             switch (visit.getStatus()) {
                 case DbSchema.VisitStatusTable.STATUS_OK:
