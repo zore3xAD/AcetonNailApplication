@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.zore3x.acetonnailapplication.R;
 import com.android.zore3x.acetonnailapplication.TimetableInformationActivity;
+import com.android.zore3x.acetonnailapplication.database.DbSchema;
 
 import java.util.List;
 
@@ -23,15 +24,30 @@ import java.util.List;
 public class TimetableListFragment extends Fragment {
 
     public static final String ID = "TimetableListFragment";
+    public static final String ARG_VISIT_STATUS = "visit_status";
     public static final String TAG = "TimetableListFragment";
 
     private RecyclerView mRecyclerViewTimetableList;
     private TimetableAdapter mAdapter;
 
+    private List<Visit> mVisitList;
+
+    private int mVisitStatus;
+
     public static TimetableListFragment newInstance() {
 
         Bundle args = new Bundle();
         args.putString("id", ID);
+
+        TimetableListFragment fragment = new TimetableListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static TimetableListFragment newInstance(int visitStatus) {
+        Bundle args = new Bundle();
+        args.putString("id", ID);
+        args.putInt(ARG_VISIT_STATUS, visitStatus);
 
         TimetableListFragment fragment = new TimetableListFragment();
         fragment.setArguments(args);
@@ -47,11 +63,26 @@ public class TimetableListFragment extends Fragment {
         mRecyclerViewTimetableList = (RecyclerView)v.findViewById(R.id.recyclerView_list);
         mRecyclerViewTimetableList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<Visit> visits = VisitStatusLab.get(getActivity()).getAll();
-
-        updateUI();
+//        updateUI();
 
         return v;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mVisitStatus = getArguments().getInt(ARG_VISIT_STATUS, 0);
+        VisitStatusLab visitStatusLab = VisitStatusLab.get(getActivity());
+        if(mVisitStatus == 0) {
+            mVisitList = visitStatusLab.getAll();
+        } if(mVisitStatus == 1) {
+            mVisitList = visitStatusLab.getAllFromStatus(DbSchema.VisitStatusTable.STATUS_WAIT);
+        } if (mVisitStatus == 2) {
+            mVisitList = visitStatusLab.getAllFromStatus(DbSchema.VisitStatusTable.STATUS_CANCEL);
+        } if (mVisitStatus == 3) {
+            mVisitList = visitStatusLab.getAllFromStatus(DbSchema.VisitStatusTable.STATUS_OK);
+        }
     }
 
     @Override
@@ -128,12 +159,12 @@ public class TimetableListFragment extends Fragment {
     }
 
     private void updateUI() {
-        List<Visit> visits = VisitLab.get(getActivity()).getAll();
+//        List<Visit> visits = VisitLab.get(getActivity()).getAll();
         if(mAdapter == null) {
-            mAdapter = new TimetableAdapter(visits);
+            mAdapter = new TimetableAdapter(mVisitList);
             mRecyclerViewTimetableList.setAdapter(mAdapter);
         } else {
-            mAdapter.setVisits(visits);
+            mAdapter.setVisits(mVisitList);
             mAdapter.notifyDataSetChanged();
         }
     }

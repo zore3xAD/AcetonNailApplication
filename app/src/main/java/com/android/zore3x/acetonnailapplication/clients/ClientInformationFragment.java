@@ -102,7 +102,7 @@ public class ClientInformationFragment extends Fragment {
             }
         });
 
-        updateUI();
+//        updateUI();
 
         return v;
     }

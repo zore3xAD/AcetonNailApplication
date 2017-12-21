@@ -10,6 +10,7 @@ import com.android.zore3x.acetonnailapplication.database.BaseHelper;
 import com.android.zore3x.acetonnailapplication.database.DbSchema;
 import com.android.zore3x.acetonnailapplication.database.DbSchema.VisitStatusTable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,6 +82,32 @@ public class VisitStatusLab {
         return visits;
     }
 
+    public List<Visit> getAllFromStatus(int visitStatus) {
+        List<Visit> visits = new ArrayList<>();
+        VisitLab visitLab = VisitLab.get(mContext);
+
+        Cursor cursor = getCursor(
+                VisitStatusTable.Cols.STATUS + " = ?",
+                new String[]{String.valueOf(visitStatus)}
+        );
+        try {
+            if(cursor.getCount() == 0) {
+                return visits;
+            }
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                String uuidVisitString = cursor.getString(cursor.getColumnIndex(VisitStatusTable.Cols.UUID_VISIT));
+
+                visits.add(visitLab.getItem(UUID.fromString(uuidVisitString)));
+
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return visits;
+    }
+
     public void add(Visit visit) {
         ContentValues cv = getContentValues(visit);
 
@@ -91,7 +118,7 @@ public class VisitStatusLab {
         ContentValues values = new ContentValues();
 
         values.put(VisitStatusTable.Cols.UUID_VISIT, visit.getId().toString());
-        values.put(VisitStatusTable.Cols.STATUS, visit.getStatus());
+        values.put(VisitStatusTable.Cols.STATUS, String.valueOf(visit.getStatus()));
 
         return values;
     }

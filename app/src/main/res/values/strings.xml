@@ -5,4 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="visit_status_array">
+        <item>All</item>
+        <item>Coming</item>
+        <item>Canceled</item>
+        <item>Completed</item>
+    </string-array>
 </resources>

@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.clients.ClientsListFragment;
 import com.android.zore3x.acetonnailapplication.database.BaseHelper;
@@ -175,9 +176,24 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_timetable:
                 Log.i(TAG, "Timetable tab");
-                mSpinnerToolbar.setVisibility(View.GONE);
-                fillMainContent(TimetableListFragment.newInstance());
-                getSupportActionBar().setTitle("Timetable");
+                getSupportActionBar().setTitle("");
+                mSpinnerToolbar.setVisibility(View.VISIBLE);
+
+                ArrayAdapter<?> visitStatusAdapter = ArrayAdapter.createFromResource(this, R.array.visit_status_array, android.R.layout.simple_spinner_item);
+                visitStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinnerToolbar.setAdapter(visitStatusAdapter);
+
+                mSpinnerToolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        fillMainContent(TimetableListFragment.newInstance(position));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
                 break;
         }
 
@@ -202,6 +218,7 @@ public class MainActivity extends AppCompatActivity
             mAdapter = new MasterTypeSpinnerAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, procedures);
             mSpinnerToolbar.setAdapter(mAdapter);
         } else {
+            mSpinnerToolbar.setAdapter(mAdapter);
             mAdapter.setProcedureList(procedures);
             mAdapter.notifyDataSetChanged();
         }

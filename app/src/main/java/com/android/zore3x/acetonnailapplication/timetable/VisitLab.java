@@ -59,7 +59,7 @@ public class VisitLab {
                 );
         try {
             if(cursor.getCount() == 0) {
-                return null;
+                return visits;
             }
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
