@@ -171,7 +171,7 @@ public class NewVisitDialog extends DialogFragment {
                         mVisit.setStatus(VisitStatusTable.STATUS_WAIT);
                         VisitLab.get(getActivity()).add(mVisit);
                         VisitStatusLab.get(getActivity()).add(mVisit);
-                        dismiss();
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

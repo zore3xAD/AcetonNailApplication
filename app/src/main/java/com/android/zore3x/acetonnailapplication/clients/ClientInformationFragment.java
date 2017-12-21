@@ -1,5 +1,6 @@
 package com.android.zore3x.acetonnailapplication.clients;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -97,14 +98,20 @@ public class ClientInformationFragment extends Fragment {
         mFloatingActionButtonNewVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewVisitDialog dialog = NewVisitDialog.newInstance(mClient.getId());
-                dialog.show(getFragmentManager(), dialog.getClass().getName());
+
+                openNewVisitDialog();
             }
         });
 
 //        updateUI();
 
         return v;
+    }
+
+    private void openNewVisitDialog() {
+        NewVisitDialog dialog = NewVisitDialog.newInstance(mClient.getId());
+        dialog.setTargetFragment(this, 1);
+        dialog.show(getFragmentManager(), dialog.getClass().getName());
     }
 
     @Override
@@ -137,7 +144,6 @@ public class ClientInformationFragment extends Fragment {
     // обноаление содержимого активности
     private void updateUI() {
         mCollapsingToolbarLayout.setTitle(mClient.getPersonal());
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mClient.getPersonal());
         mTextViewClientPhone.setText(mClient.getPhone());
 
         VisitStatusLab visitLab = VisitStatusLab.get(getActivity());
@@ -191,6 +197,19 @@ public class ClientInformationFragment extends Fragment {
             }
 
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 1:
+                    updateUI();
+                    break;
+            }
+        }
+
     }
 
     private class ClientVisitHistoryAdapter extends RecyclerView.Adapter<ClientVisitHistoryHolder> {
