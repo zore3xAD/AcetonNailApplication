@@ -89,7 +89,7 @@ public class ClientInformationFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) v.findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) v.findViewById(R.id.collapsingToolbar_client_information);
         mRecyclerViewClientVisitHistory = (RecyclerView) v.findViewById(R.id.recyclerView_client_information_visit);
         mRecyclerViewClientVisitHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
 

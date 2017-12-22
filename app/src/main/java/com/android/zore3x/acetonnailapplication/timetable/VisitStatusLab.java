@@ -114,6 +114,19 @@ public class VisitStatusLab {
         mDatabase.insert(VisitStatusTable.NAME, null, cv);
     }
 
+    public void update(Visit visit) {
+
+        ContentValues values = getContentValues(visit);
+
+        mDatabase.update(
+                VisitStatusTable.NAME,
+                values,
+                VisitStatusTable.Cols.UUID_VISIT + " = ? ",
+                new String[]{visit.getId().toString()}
+        );
+
+    }
+
     private ContentValues getContentValues(Visit visit) {
         ContentValues values = new ContentValues();
 

@@ -41,7 +41,8 @@
         </activity>
         <activity
             android:name=".TimetableInformationActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
