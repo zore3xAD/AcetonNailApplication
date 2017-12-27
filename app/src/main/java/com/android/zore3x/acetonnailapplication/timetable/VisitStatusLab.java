@@ -121,7 +121,7 @@ public class VisitStatusLab {
         mDatabase.update(
                 VisitStatusTable.NAME,
                 values,
-                VisitStatusTable.Cols.UUID_VISIT + " = ? ",
+                VisitStatusTable.Cols.UUID_VISIT + " = ?",
                 new String[]{visit.getId().toString()}
         );
 

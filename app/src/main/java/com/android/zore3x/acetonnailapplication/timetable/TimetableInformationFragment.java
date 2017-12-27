@@ -1,5 +1,7 @@
 package com.android.zore3x.acetonnailapplication.timetable;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -109,9 +111,23 @@ public class TimetableInformationFragment extends Fragment {
                 Toast.makeText(getActivity(), "Complete", Toast.LENGTH_SHORT).show();
             }
         });
+
+        mFabDelay = (FloatingActionButton)view.findViewById(R.id.fab_visit_information_delay);
+        mFabDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDelayDialog();
+            }
+        });
         updateUI();
 
         return view;
+    }
+
+    private void openDelayDialog() {
+        NewVisitDialog dialog = NewVisitDialog.newInstance(mVisit);
+        dialog.setTargetFragment(this, 1);
+        dialog.show(getFragmentManager(), dialog.getClass().getName());
     }
 
     @Override
@@ -136,7 +152,22 @@ public class TimetableInformationFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 1:
+                    updateUI();
+                    break;
+            }
+        }
+    }
+
     private void updateUI() {
+
+        mVisit = VisitLab.get(getActivity()).getItem(mVisit.getId());
+
         mCollapsingToolbarLayout.setTitle(mVisit.getClient().getPersonal());
         mTextViewMasterPersonal.setText(mVisit.getMaster().getPersonal());
         mTextViewProcedure.setText(mVisit.getProcedure().getTitle());

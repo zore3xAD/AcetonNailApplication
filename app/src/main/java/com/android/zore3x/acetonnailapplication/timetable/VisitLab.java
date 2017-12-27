@@ -30,7 +30,7 @@ public class VisitLab {
     }
 
     public static VisitLab get(Context context) {
-        if(sVisitLab == null) {
+        if (sVisitLab == null) {
             sVisitLab = new VisitLab(context);
         }
         return sVisitLab;
@@ -56,9 +56,9 @@ public class VisitLab {
         VisitCursorWrapper cursor = query(
                 VisitTable.Cols.UUID_CLIENT + " = ?",
                 new String[]{clientId.toString()}
-                );
+        );
         try {
-            if(cursor.getCount() == 0) {
+            if (cursor.getCount() == 0) {
                 return visits;
             }
             cursor.moveToFirst();
@@ -93,7 +93,13 @@ public class VisitLab {
     }
 
     public void update(Visit visit) {
+        ContentValues values = getContentValues(visit);
 
+        mDatabase.update(VisitTable.NAME,
+                values,
+                VisitTable.Cols.UUID + " = ?",
+                new String[]{visit.getId().toString()}
+        );
     }
 
     public void delete(Visit visit) {

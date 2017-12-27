@@ -47,37 +47,63 @@ public class NewVisitDialog extends DialogFragment {
     private static final int REQUEST_TIME = 1;
 
     private static final String EXTRA_CLIENT = "client";
+    private static final String EXTRA_VISIT = "visit";
+    private static final String EXTRA_FLAG = "flag";
 
-    Button mButtonSelectTime;
-    Button mButtonSelectDate;
+    private static final int FLAG_NEW_VISIT = 1;
+    private static final int FLAG_DELAY_VISIT = 2;
 
-    Spinner mSpinnerProcedureType;
-    Spinner mSpinnerMasterList;
+    private Button mButtonSelectTime;
+    private Button mButtonSelectDate;
 
-    Client mClient;
-    Visit mVisit;
-    Master mMaster;
-    Procedure mProcedure;
+    private Spinner mSpinnerProcedureType;
+    private Spinner mSpinnerMasterList;
 
-    Calendar mVisitDate;
+    private Client mClient;
+    private Visit mVisit;
+    private Master mMaster;
+    private Procedure mProcedure;
 
-    MasterTypeSpinnerAdapter mMasterTypeAdapter;
-    MastersListSpinnerAdapter mMastersListAdapter;
+    private Calendar mVisitDate;
 
-    boolean mSpinChanged = false;
+    private MasterTypeSpinnerAdapter mMasterTypeAdapter;
+    private MastersListSpinnerAdapter mMastersListAdapter;
+
+    private int mTypeDialog;
+    private UUID mClientId;
+    private UUID mVisitId;
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        UUID clientId = (UUID) getArguments().getSerializable(EXTRA_CLIENT);
-
-        mClient = ClientLab.get(getActivity()).getItem(clientId);
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_new_client_visit, null);
 
         mButtonSelectDate = (Button) view.findViewById(R.id.button_dialog_new_client_visit_date);
+        mButtonSelectTime = (Button) view.findViewById(R.id.button_dialog_new_client_visit_time);
+        mSpinnerMasterList = (Spinner) view.findViewById(R.id.spinner_dialog_new_client_visit_master);
+        mSpinnerProcedureType = (Spinner) view.findViewById(R.id.spinner_dialog_new_client_visit_procedure);
+
+        mTypeDialog = getArguments().getInt(EXTRA_FLAG);
+        switch (mTypeDialog) {
+            case FLAG_NEW_VISIT:
+                mClientId = (UUID) getArguments().getSerializable(EXTRA_CLIENT);
+                mClient = ClientLab.get(getActivity()).getItem(mClientId);
+                mVisit = new Visit();
+                break;
+            case FLAG_DELAY_VISIT:
+                mVisitId = (UUID) getArguments().getSerializable(EXTRA_VISIT);
+
+                mVisit = VisitLab.get(getActivity()).getItem(mVisitId);
+                mClient = mVisit.getClient();
+
+                mButtonSelectDate.setText(mVisit.getStringDate());
+                mButtonSelectTime.setText(mVisit.getStringTime());
+                break;
+        }
+
         mButtonSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +114,7 @@ public class NewVisitDialog extends DialogFragment {
                 dateDialog.show(fm, DIALOG_DATE);
             }
         });
-        mButtonSelectTime = (Button) view.findViewById(R.id.button_dialog_new_client_visit_time);
+
         mButtonSelectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,18 +125,8 @@ public class NewVisitDialog extends DialogFragment {
                 timeDialog.show(fm, DIALOG_TIME);
             }
         });
-        mSpinnerMasterList = (Spinner) view.findViewById(R.id.spinner_dialog_new_client_visit_master);
-//        mSpinnerMasterList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                mMaster = (Master) parent.getItemAtPosition(position);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+
+
         mSpinnerMasterList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -122,7 +138,7 @@ public class NewVisitDialog extends DialogFragment {
                 mMaster = (Master)parent.getItemAtPosition(0);
             }
         });
-        mSpinnerProcedureType = (Spinner) view.findViewById(R.id.spinner_dialog_new_client_visit_procedure);
+
         mSpinnerProcedureType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -164,13 +180,19 @@ public class NewVisitDialog extends DialogFragment {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(), mVisit.getStringDate() + " " + mVisit.getStringTime(), Toast.LENGTH_SHORT).show();
                         mVisit.setClient(mClient);
                         mVisit.setMaster(mMaster);
                         mVisit.setProcedure(mProcedure);
                         mVisit.setStatus(VisitStatusTable.STATUS_WAIT);
-                        VisitLab.get(getActivity()).add(mVisit);
-                        VisitStatusLab.get(getActivity()).add(mVisit);
+
+                        if(mTypeDialog == FLAG_DELAY_VISIT) {
+                            VisitLab.get(getActivity()).update(mVisit);
+                            VisitStatusLab.get(getActivity()).update(mVisit);
+                        } else if(mTypeDialog == FLAG_NEW_VISIT) {
+                            VisitLab.get(getActivity()).add(mVisit);
+                            VisitStatusLab.get(getActivity()).add(mVisit);
+                        }
+
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
                     }
                 })
@@ -198,7 +220,6 @@ public class NewVisitDialog extends DialogFragment {
 
             if (mVisitDate == null) {
                 mVisitDate = Calendar.getInstance();
-                mVisit = new Visit();
             }
             mVisitDate.set(Calendar.MONTH, month);
             mVisitDate.set(Calendar.YEAR, year);
@@ -227,9 +248,21 @@ public class NewVisitDialog extends DialogFragment {
         }
     }
 
-    public static NewVisitDialog newInstance(UUID clientId) {
+    public static NewVisitDialog newInstance(Client client) {
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_CLIENT, clientId);
+        args.putSerializable(EXTRA_CLIENT, client.getId());
+        args.putInt(EXTRA_FLAG, FLAG_NEW_VISIT);
+
+        NewVisitDialog fragment = new NewVisitDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static NewVisitDialog newInstance(Visit visit) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_VISIT, visit.getId());
+        args.putInt(EXTRA_FLAG, FLAG_DELAY_VISIT);
+
         NewVisitDialog fragment = new NewVisitDialog();
         fragment.setArguments(args);
         return fragment;

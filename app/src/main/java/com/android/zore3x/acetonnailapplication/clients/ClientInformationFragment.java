@@ -64,8 +64,8 @@ public class ClientInformationFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // вывод из арггументов фрагмента ИД клиента для вывода на экран информации
-        UUID clientId = (UUID)getArguments().getSerializable(ARG_CLIENT_ID);
-        if(clientId != null) {
+        UUID clientId = (UUID) getArguments().getSerializable(ARG_CLIENT_ID);
+        if (clientId != null) {
             mClient = ClientLab.get(getActivity()).getItem(clientId);
         }
     }
@@ -73,8 +73,8 @@ public class ClientInformationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        UUID clientId = (UUID)getArguments().getSerializable(ARG_CLIENT_ID);
-        if(clientId != null) {
+        UUID clientId = (UUID) getArguments().getSerializable(ARG_CLIENT_ID);
+        if (clientId != null) {
             mClient = ClientLab.get(getActivity()).getItem(clientId);
         }
         updateUI();
@@ -85,16 +85,16 @@ public class ClientInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_client_information, container, false);
 
-        Toolbar toolbar = (Toolbar)v.findViewById(R.id.toolbar_client_information);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar_client_information);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) v.findViewById(R.id.collapsingToolbar_client_information);
         mRecyclerViewClientVisitHistory = (RecyclerView) v.findViewById(R.id.recyclerView_client_information_visit);
         mRecyclerViewClientVisitHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mTextViewClientPhone = (TextView)v.findViewById(R.id.textView_client_information_phone);
-        mFloatingActionButtonNewVisit = (FloatingActionButton)v.findViewById(R.id.fab_write_client_to_visit);
+        mTextViewClientPhone = (TextView) v.findViewById(R.id.textView_client_information_phone);
+        mFloatingActionButtonNewVisit = (FloatingActionButton) v.findViewById(R.id.fab_write_client_to_visit);
         mFloatingActionButtonNewVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +109,7 @@ public class ClientInformationFragment extends Fragment {
     }
 
     private void openNewVisitDialog() {
-        NewVisitDialog dialog = NewVisitDialog.newInstance(mClient.getId());
+        NewVisitDialog dialog = NewVisitDialog.newInstance(mClient);
         dialog.setTargetFragment(this, 1);
         dialog.show(getFragmentManager(), dialog.getClass().getName());
     }
@@ -148,7 +148,7 @@ public class ClientInformationFragment extends Fragment {
 
         VisitStatusLab visitLab = VisitStatusLab.get(getActivity());
         List<Visit> visits = visitLab.getAllFromClient(mClient);
-        if(mAdapter == null) {
+        if (mAdapter == null) {
             mAdapter = new ClientVisitHistoryAdapter(visits);
             mRecyclerViewClientVisitHistory.setAdapter(mAdapter);
         } else {
@@ -169,12 +169,12 @@ public class ClientInformationFragment extends Fragment {
         public ClientVisitHistoryHolder(View itemView) {
             super(itemView);
 
-            mImageViewVisitStatus = (ImageView)itemView.findViewById(R.id.imageView_item_client_information_visit_card_status);
+            mImageViewVisitStatus = (ImageView) itemView.findViewById(R.id.imageView_item_client_information_visit_card_status);
 
-            mTextViewProcedure = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_procedure);
-            mTextViewVisitDate = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_date);
-            mTextViewVisitTime = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_time);
-            mTextViewVisitMaster = (TextView)itemView.findViewById(R.id.textView_list_item_client_information_visit_master);
+            mTextViewProcedure = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_procedure);
+            mTextViewVisitDate = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_date);
+            mTextViewVisitTime = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_time);
+            mTextViewVisitMaster = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_master);
 
         }
 
