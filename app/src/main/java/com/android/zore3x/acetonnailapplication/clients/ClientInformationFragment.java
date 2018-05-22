@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.android.zore3x.acetonnailapplication.EditClientInformationActivity;
 import com.android.zore3x.acetonnailapplication.R;
+import com.android.zore3x.acetonnailapplication.TimetableInformationActivity;
 import com.android.zore3x.acetonnailapplication.database.DbSchema;
 import com.android.zore3x.acetonnailapplication.timetable.NewVisitDialog;
 import com.android.zore3x.acetonnailapplication.timetable.Visit;
@@ -157,7 +158,7 @@ public class ClientInformationFragment extends Fragment {
         }
     }
 
-    private class ClientVisitHistoryHolder extends RecyclerView.ViewHolder {
+    private class ClientVisitHistoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView mImageViewVisitStatus;
 
@@ -165,6 +166,8 @@ public class ClientInformationFragment extends Fragment {
         TextView mTextViewVisitDate;
         TextView mTextViewVisitTime;
         TextView mTextViewVisitMaster;
+
+        Visit mVisit;
 
         public ClientVisitHistoryHolder(View itemView) {
             super(itemView);
@@ -176,16 +179,19 @@ public class ClientInformationFragment extends Fragment {
             mTextViewVisitTime = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_time);
             mTextViewVisitMaster = (TextView) itemView.findViewById(R.id.textView_list_item_client_information_visit_master);
 
+            itemView.setOnClickListener(this);
         }
 
         private void bindHistory(Visit visit) {
 
-            mTextViewVisitTime.setText(visit.getStringTime());
-            mTextViewVisitDate.setText(visit.getStringDate());
-            mTextViewProcedure.setText(visit.getProcedure().getTitle());
-            mTextViewVisitMaster.setText(visit.getMaster().getPersonal());
+            mVisit = visit;
 
-            switch (visit.getStatus()) {
+            mTextViewVisitTime.setText(mVisit.getStringTime());
+            mTextViewVisitDate.setText(mVisit.getStringDate());
+            mTextViewProcedure.setText(mVisit.getProcedure().getTitle());
+            mTextViewVisitMaster.setText(mVisit.getMaster().getPersonal());
+
+            switch (mVisit.getStatus()) {
                 case DbSchema.VisitStatusTable.STATUS_OK:
                     mImageViewVisitStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_visit_status_ok));
                     break;
@@ -198,6 +204,14 @@ public class ClientInformationFragment extends Fragment {
                 default:
                     mImageViewVisitStatus.setImageDrawable(getResources().getDrawable(R.drawable.ic_visit_status_wait));
             }
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = TimetableInformationActivity.newIntent(getActivity(), mVisit.getId());
+            startActivity(intent);
 
         }
     }

@@ -98,9 +98,11 @@ public class NewVisitDialog extends DialogFragment {
 
                 mVisit = VisitLab.get(getActivity()).getItem(mVisitId);
                 mClient = mVisit.getClient();
+                mProcedure = mVisit.getProcedure();
 
                 mButtonSelectDate.setText(mVisit.getStringDate());
                 mButtonSelectTime.setText(mVisit.getStringTime());
+
                 break;
         }
 
